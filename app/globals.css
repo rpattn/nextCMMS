@@ -1,0 +1,14 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--mui-palette-text-primary, #111);
+  background: var(--mui-palette-background-default, #fff);
+}
+
+a { color: #60a5fa; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button { cursor: pointer; }
