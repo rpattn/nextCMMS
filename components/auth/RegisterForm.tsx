@@ -80,6 +80,16 @@ export default function RegisterForm({ presetEmail, subscriptionPlanId }: { pres
       subscriptionPlanId,
       phone: (country ? `+${country.phone}` : '') + phone
     };
+    // payload.language must be one of DE, EN, PT_BR, FR, TR, AR, PL, ES
+    // TODO: fix this more robustly in the future
+    // currently the navigator.language can return values like "en-US", "en-GB", "fr-FR" etc
+    // we will map them to the accepted values or default to EN
+    let accepted = ["DE", "EN", "PT_BR", "FR", "TR", "AR", "PL", "ES"];
+    if (!accepted.includes(payload.language)) {
+      const lang = payload.language.split('-')[0];  
+      if (accepted.includes(lang)) payload.language = lang;
+      else payload.language = 'EN';
+    }    
     const res = await fetch('/api/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     const data = await res.json().catch(() => ({}));
     setLoading(false);
@@ -141,7 +151,7 @@ export default function RegisterForm({ presetEmail, subscriptionPlanId }: { pres
           options={countries as any}
           autoHighlight
           value={country}
-          onChange={(_e, v) => setCountry(v)}
+          onChange={(_e, v) => {console.log(v); setCountry(v)}}
           getOptionLabel={(o: any) => o?.label || ''}
           renderInput={(params) => (
             <TextField
