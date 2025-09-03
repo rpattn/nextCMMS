@@ -5,28 +5,29 @@ import { API_URL } from '@/lib/env';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const res = await fetch(API_URL + 'auth/signin', {
+    const res = await fetch(API_URL + 'auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ email: body.email, password: body.password, type: 'client' })
+      body: JSON.stringify({ username: body.email, password: body.password, type: 'client' })
     });
-
     if (!res.ok) {
       const msg = await res.text();
       return NextResponse.json({ error: msg || 'Login failed' }, { status: 401 });
     }
-    const data = (await res.json()) as { accessToken: string };
-    if (!data?.accessToken) {
+    const data = (await res.headers.getSetCookie())
+    if (!data) {
       return NextResponse.json({ error: 'No token in response' }, { status: 500 });
     }
     const isProd = process.env.NODE_ENV === 'production';
-    (await cookies()).set('session', data.accessToken, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: isProd,
-      path: '/',
-      // Optional: 14 days similar to current frontend
-      maxAge: 60 * 60 * 24 * 14
+    const _cookies = await cookies();
+    //SET COOKIES
+    data.map(cookie => {
+      _cookies.set({
+        name: cookie.split('=')[0],
+        value: cookie.split('=')[1].split(';')[0],
+        httpOnly: true,
+        secure: isProd, // Set to true in production
+      });
     });
     return new NextResponse(null, { status: 204 });
   } catch (e: any) {

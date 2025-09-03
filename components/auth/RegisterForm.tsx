@@ -151,7 +151,7 @@ export default function RegisterForm({ presetEmail, subscriptionPlanId }: { pres
           options={countries as any}
           autoHighlight
           value={country}
-          onChange={(_e, v) => {console.log(v); setCountry(v)}}
+          onChange={(_e, v) => {setCountry(v)}}
           getOptionLabel={(o: any) => o?.label || ''}
           renderInput={(params) => (
             <TextField
