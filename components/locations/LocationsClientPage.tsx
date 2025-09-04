@@ -237,7 +237,7 @@ export default function LocationsClientPage({
             { field: 'id', headerName: 'ID', width: 120 },
             { field: 'name', headerName: 'Name', flex: 1, minWidth: 220 },
             { field: 'address', headerName: 'Address', flex: 1, minWidth: 220 },
-            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updatedAt ? new Date(p.row.updatedAt).toLocaleString() : '' }
+            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
           ] as any}
           primaryField="name"
           fetchChildren={async (parentId) => {
@@ -325,7 +325,7 @@ function LocationDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { 
           <div><b>Files:</b> {data.files.length}</div>
         )}
         <div style={{ fontSize: 12, opacity: 0.7 }}>
-          <b>Created:</b> {data?.createdAt ? new Date(data.createdAt).toLocaleString() : ''} · <b>Updated:</b> {data?.updatedAt ? new Date(data.updatedAt).toLocaleString() : ''}
+          <b>Created:</b> {data?.created_at ? new Date(data.created_at).toLocaleString() : ''} · <b>Updated:</b> {data?.updated_at ? new Date(data.updated_at).toLocaleString() : ''}
         </div>
       </Stack>
     </div>

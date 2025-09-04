@@ -52,14 +52,14 @@ export default function LocationsGrid({
     {
       field: 'updatedAt', headerName: 'Updated', width: 170,
       renderCell: (params: any) => {
-        const v = params?.row?.updatedAt as string | undefined;
+        const v = params?.row?.updated_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
       }
     },
     {
       field: 'createdAt', headerName: 'Created', width: 170,
       renderCell: (params: any) => {
-        const v = params?.row?.createdAt as string | undefined;
+        const v = params?.row?.created_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
       }
     },

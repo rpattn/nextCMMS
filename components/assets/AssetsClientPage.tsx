@@ -220,7 +220,7 @@ export default function AssetsClientPage({
               }
             },
             { field: 'location', headerName: 'Location', width: 220, valueGetter: (p: any) => p?.row?.location?.name || '' },
-            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updatedAt ? new Date(p.row.updatedAt).toLocaleString() : '' }
+            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
           ] as any}
           primaryField="name"
           fetchChildren={async (parentId) => {
@@ -328,7 +328,7 @@ function AssetDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { id:
           <div><b>Parts:</b> {data.parts.length}</div>
         )}
         <div style={{ fontSize: 12, opacity: 0.7 }}>
-          <b>Created:</b> {data?.createdAt ? new Date(data.createdAt).toLocaleString() : ''} · <b>Updated:</b> {data?.updatedAt ? new Date(data.updatedAt).toLocaleString() : ''}
+          <b>Created:</b> {data?.created_at ? new Date(data.created_at).toLocaleString() : ''} · <b>Updated:</b> {data?.updated_at ? new Date(data.updated_at).toLocaleString() : ''}
         </div>
       </Stack>
     </div>

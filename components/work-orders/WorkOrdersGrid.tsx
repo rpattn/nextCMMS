@@ -127,7 +127,7 @@ export default function WorkOrdersGrid({
         headerName: t('updated_at') as string,
         width: 170,
         renderCell: (params: any) => {
-          const v = params?.row?.updatedAt as string | undefined;
+          const v = params?.row?.updated_at as string | undefined;
           return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
         }
       },
@@ -136,7 +136,7 @@ export default function WorkOrdersGrid({
         headerName: t('created_at') as string,
         width: 170,
         renderCell: (params: any) => {
-          const v = params?.row?.createdAt as string | undefined;
+          const v = params?.row?.created_at as string | undefined;
           return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
         }
       },
