@@ -7,7 +7,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 type LinkItem = { id: number; relationType?: string; child?: { id: number; title?: string } };
 
-export default function LinksList({ workOrderId }: { workOrderId: number }) {
+export default function LinksList({ workOrderId }: { workOrderId: string }) {
   const [items, setItems] = useState<LinkItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);

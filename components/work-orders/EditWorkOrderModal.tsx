@@ -8,7 +8,7 @@ import RemoteSearchSelect, { RemoteOption } from '@/components/common/RemoteSear
 import MultiRemoteSearchSelect from '@/components/common/MultiRemoteSearchSelect';
 
 type WorkOrder = {
-  id: number;
+  id: string;
   title?: string;
   description?: string;
   priority?: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | string;
@@ -25,7 +25,7 @@ type WorkOrder = {
   customers?: Array<{ id: number; name?: string }>;
 };
 
-export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id: number; open: boolean; onClose: () => void; onSaved?: () => void }) {
+export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id: string; open: boolean; onClose: () => void; onSaved?: () => void }) {
   const { t } = useI18n();
   const [form, setForm] = useState<WorkOrder | null>(null);
   const [submitting, setSubmitting] = useState(false);

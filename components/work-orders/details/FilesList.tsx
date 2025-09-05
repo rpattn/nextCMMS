@@ -8,7 +8,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 type FileItem = { id: number; name?: string; url?: string };
 
-export default function FilesList({ workOrderId }: { workOrderId: number }) {
+export default function FilesList({ workOrderId }: { workOrderId: string }) {
   const [files, setFiles] = useState<FileItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);

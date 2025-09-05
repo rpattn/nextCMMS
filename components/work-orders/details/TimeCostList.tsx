@@ -7,7 +7,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 
 type Entry = { id: number; type?: 'TIME' | 'COST' | string; hours?: number; amount?: number; note?: string; date?: string };
 
-export default function TimeCostList({ workOrderId }: { workOrderId: number }) {
+export default function TimeCostList({ workOrderId }: { workOrderId: string }) {
   const [entries, setEntries] = useState<Entry[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [version, setVersion] = useState(0);

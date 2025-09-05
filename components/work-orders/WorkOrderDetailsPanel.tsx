@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useI18n } from '@/components/providers/I18nProvider';
 
 type WorkOrder = {
-  id: number;
+  id: string;
   customId?: string;
   title?: string;
   description?: string;
@@ -38,7 +38,7 @@ type WorkOrder = {
   customers?: Array<{ id: number; name?: string }>;
 };
 
-export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: number; onClose?: () => void; onChanged?: () => void }) {
+export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: string; onClose?: () => void; onChanged?: () => void }) {
   const { t } = useI18n();
   const [wo, setWo] = useState<WorkOrder | null>(null);
   const [loading, setLoading] = useState(true);
@@ -121,8 +121,8 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('id_col') || 'ID'}</Typography><Typography variant="body2">{wo.customId || wo.id}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('status') || 'Status'}</Typography><Typography variant="body2">{wo.status || ''}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('due_col') || 'Due Date'}</Typography><Typography variant="body2">{fmtDate(wo.dueDate)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('created_at') || 'Created At'}</Typography><Typography variant="body2">{fmtDate(wo.created_at, true)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('updated_at') || 'Updated At'}</Typography><Typography variant="body2">{fmtDate(wo.updated_at, true)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('created_at') || 'Created At'}</Typography><Typography variant="body2">{fmtDate(wo.createdAt, true)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('updated_at') || 'Updated At'}</Typography><Typography variant="body2">{fmtDate(wo.updatedAt, true)}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_start_date') || 'Estimated Start'}</Typography><Typography variant="body2">{fmtDate(wo.estimatedStartDate || undefined)}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_duration') || 'Estimated Duration (h)'}</Typography><Typography variant="body2">{wo.estimatedDuration ?? ''}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('required_signature') || 'Required Signature'}</Typography><Typography variant="body2">{boolText(wo.requiredSignature)}</Typography></Grid>

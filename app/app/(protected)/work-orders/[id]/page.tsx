@@ -2,7 +2,7 @@ import { apiServer } from '@/lib/apiServer';
 import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 
 type WorkOrder = {
-  id: number;
+  id: string;
   title?: string;
   description?: string;
   priority?: 'HIGH' | 'MEDIUM' | 'LOW' | 'NONE' | string;

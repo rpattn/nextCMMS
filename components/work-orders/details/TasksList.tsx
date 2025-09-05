@@ -14,7 +14,7 @@ type Task = {
   taskBase?: any;
 };
 
-export default function TasksList({ workOrderId, onChanged }: { workOrderId: number; onChanged?: () => void }) {
+export default function TasksList({ workOrderId, onChanged }: { workOrderId: string; onChanged?: () => void }) {
   const [tasks, setTasks] = useState<Task[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState('');

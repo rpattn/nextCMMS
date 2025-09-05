@@ -60,7 +60,7 @@ export default function WorkOrdersClientPage({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [dueFrom, setDueFrom] = useState<string | null>(null);
   const [dueTo, setDueTo] = useState<string | null>(null);
@@ -87,7 +87,7 @@ export default function WorkOrdersClientPage({
     const filterFields = [] as SearchCriteria['filterFields'];
     const allowedPriorities = ['HIGH', 'MEDIUM', 'LOW', 'NONE'];
     const qTrim = q?.trim();
-    if (qTrim) filterFields.push({ field: 'title', value: qTrim, operation: 'cn' });
+    if (qTrim) filterFields.push({ field: 'text', value: qTrim, operation: 'cn' });
     if (priority && allowedPriorities.includes(priority)) {
       filterFields.push({
         field: 'priority',
@@ -136,7 +136,7 @@ export default function WorkOrdersClientPage({
         title: 'title',
         priority: 'priority',
         status: 'status',
-        dueDate: 'dueDate',
+        dueDate: 'due_date',
         createdAt: 'createdAt',
         updatedAt: 'updatedAt',
         completedOn: 'completedOn'
@@ -295,7 +295,7 @@ export default function WorkOrdersClientPage({
 
       <EntityDetailsDrawer open={details.open} onClose={details.close}>
         {details.id != null && (
-          <WorkOrderDetailsPanel id={Number(details.id)} onClose={details.close} onChanged={() => setRefreshKey((k) => k + 1)} />
+          <WorkOrderDetailsPanel id={String(details.id)} onClose={details.close} onChanged={() => setRefreshKey((k) => k + 1)} />
         )}
       </EntityDetailsDrawer>
 

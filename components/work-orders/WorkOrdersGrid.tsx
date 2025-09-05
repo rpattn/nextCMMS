@@ -14,7 +14,7 @@ import EntityGrid from '@/components/entity/EntityGrid';
 import RowActionsMenu from '@/components/entity/RowActionsMenu';
 
 export type WorkOrderRow = {
-  id: number;
+  id: string;
   title?: string;
   description?: string;
   priority?: string;
@@ -46,8 +46,8 @@ export default function WorkOrdersGrid({
   loading?: boolean;
   onChangePagination?: (model: GridPaginationModel) => void;
   onChangeSort?: (model: GridSortModel) => void;
-  onOpenDetails?: (id: number) => void;
-  onEdit?: (id: number) => void;
+  onOpenDetails?: (id: string) => void;
+  onEdit?: (id: string) => void;
   onAfterAction?: () => void;
 }) {
   const router = useRouter();
@@ -57,14 +57,14 @@ export default function WorkOrdersGrid({
 
   const columns: GridColDef[] = useMemo(
     () => [
-      { field: 'id', headerName: t('id_col'), width: 120 },
+      { field: 'custom_id', headerName: t('id_col'), width: 120 },
       { field: 'title', headerName: t('title_col'), flex: 1, minWidth: 200 },
       {
         field: 'status',
         headerName: t('status') as string,
         width: 170,
         renderCell: (params: any) => {
-          const id = params.row.id as number;
+          const id = params.row.id as string;
           const [val, setVal] = React.useState<string>((params?.row?.status as string) || 'OPEN');
           const onChange = async (newVal: string) => {
             const prev = val;
@@ -113,18 +113,18 @@ export default function WorkOrdersGrid({
         )
       },
       {
-        field: 'dueDate',
+        field: 'due_date',
         headerName: t('due_col'),
         width: 160,
         renderCell: (params: any) => {
-          const v = params?.row?.dueDate as string | undefined;
+          const v = params?.row?.due_date as string | undefined;
           return <span>{v ? new Date(v).toLocaleDateString() : ''}</span>;
         }
       }
       ,
       {
         field: 'updatedAt',
-        headerName: t('updated_at') as string,
+        headerName: t('Updated') as string,
         width: 170,
         renderCell: (params: any) => {
           const v = params?.row?.updated_at as string | undefined;
@@ -133,7 +133,7 @@ export default function WorkOrdersGrid({
       },
       {
         field: 'createdAt',
-        headerName: t('created_at') as string,
+        headerName: t('Created') as string,
         width: 170,
         renderCell: (params: any) => {
           const v = params?.row?.created_at as string | undefined;
@@ -147,7 +147,7 @@ export default function WorkOrdersGrid({
         filterable: false,
         width: 70,
         renderCell: (params) => {
-          const id = params.row.id as number;
+          const id = params.row.id as string;
           return (
             <RowActionsMenu
               actions={[
@@ -155,7 +155,9 @@ export default function WorkOrdersGrid({
                   key: 'view',
                   label: 'View',
                   icon: <OpenInNewTwoToneIcon fontSize="small" />,
-                  onClick: () => router.push(`/app/work-orders/${id}`)
+                  onClick: () => {
+                    router.push(`/app/work-orders/${id}`)
+                  }
                 },
                 {
                   key: 'edit',
@@ -200,9 +202,9 @@ export default function WorkOrdersGrid({
       onChangePagination={onChangePagination}
       onChangeSort={onChangeSort}
       onRowClick={(id) => {
-        const numId = Number(id);
-        if (onOpenDetails) onOpenDetails(numId);
-        else router.push(`/app/work-orders/${numId}`);
+        const uuid = String(id);
+        if (onOpenDetails) onOpenDetails(uuid);
+        else router.push(`/app/work-orders/${uuid}`);
       }}
       getRowId={(row) => (row as any).id}
     />
