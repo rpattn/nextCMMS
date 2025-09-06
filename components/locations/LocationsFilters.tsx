@@ -11,7 +11,7 @@ export default function LocationsFilters({
   onParentLocationChange,
   address,
   onAddressChange,
-  customId,
+  custom_id,
   onCustomIdChange,
   hasChildren,
   onHasChildrenChange,
@@ -36,7 +36,7 @@ export default function LocationsFilters({
   onParentLocationChange: (val: RemoteOption | null) => void;
   address: string | null;
   onAddressChange: (v: string | null) => void;
-  customId: string | null;
+  custom_id: string | null;
   onCustomIdChange: (v: string | null) => void;
   hasChildren: boolean | null;
   onHasChildrenChange: (v: boolean | null) => void;
@@ -73,7 +73,7 @@ export default function LocationsFilters({
         }}
       />
       <TextField label={t('address') || 'Address'} size="small" value={address || ''} onChange={(e) => onAddressChange(e.target.value)} />
-      <TextField label={t('custom_id') || 'Custom ID'} size="small" value={customId || ''} onChange={(e) => onCustomIdChange(e.target.value)} />
+      <TextField label={t('custom_id') || 'Custom ID'} size="small" value={custom_id || ''} onChange={(e) => onCustomIdChange(e.target.value)} />
       <TextField label={t('has_children') || 'Has Children'} size="small" select value={hasChildren === null ? 'any' : hasChildren ? 'yes' : 'no'} onChange={(e) => onHasChildrenChange(e.target.value === 'any' ? null : e.target.value === 'yes')}>
         <option value="any">{t('any') || 'Any'}</option>
         <option value="yes">{t('yes') || 'Yes'}</option>

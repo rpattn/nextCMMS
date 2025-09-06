@@ -54,7 +54,7 @@ export default function WorkOrdersClientPage({
   const [statuses, setStatuses] = useState<string[]>(['OPEN', 'IN_PROGRESS', 'ON_HOLD']);
   const [hideArchived, setHideArchived] = useState<boolean>(true);
   const [createOpen, setCreateOpen] = useState(false);
-  const [createInitialDueDate, setCreateInitialDueDate] = useState<Date | null>(null);
+  const [createInitialdue_date, setCreateInitialdue_date] = useState<Date | null>(null);
   const details = useDetailsDrawer('wo');
   const [refreshKey, setRefreshKey] = useState(0);
   const router = useRouter();
@@ -104,10 +104,10 @@ export default function WorkOrdersClientPage({
       filterFields.push({ field: 'archived', operation: 'eq', value: false } as any);
     }
     if (dueFrom) {
-      filterFields.push({ field: 'dueDate', operation: 'ge', value: dueFrom } as any);
+      filterFields.push({ field: 'due_date', operation: 'ge', value: dueFrom } as any);
     }
     if (dueTo) {
-      filterFields.push({ field: 'dueDate', operation: 'le', value: dueTo } as any);
+      filterFields.push({ field: 'due_date', operation: 'le', value: dueTo } as any);
     }
     if (typeValue === 'REACTIVE') filterFields.push({ field: 'parentPreventiveMaintenance', operation: 'nu', value: '' } as any);
     if (typeValue === 'REPEATING') filterFields.push({ field: 'parentPreventiveMaintenance', operation: 'nn', value: '' } as any);
@@ -119,10 +119,10 @@ export default function WorkOrdersClientPage({
     if (completedByUsers.length) filterFields.push({ field: 'completedBy', operation: 'in', value: '', values: completedByUsers.map(a => a.id) } as any);
     if (assignedToUsers.length) filterFields.push({ field: 'assignedTo', operation: 'inm', value: '', values: assignedToUsers.map(a => a.id) } as any);
     if (customers.length) filterFields.push({ field: 'customer', operation: 'inm', value: '', values: customers.map(a => a.id) } as any);
-    if (createdFrom) filterFields.push({ field: 'createdAt', operation: 'ge', value: createdFrom } as any);
-    if (createdTo) filterFields.push({ field: 'createdAt', operation: 'le', value: createdTo } as any);
-    if (updatedFrom) filterFields.push({ field: 'updatedAt', operation: 'ge', value: updatedFrom } as any);
-    if (updatedTo) filterFields.push({ field: 'updatedAt', operation: 'le', value: updatedTo } as any);
+    if (createdFrom) filterFields.push({ field: 'created_at', operation: 'ge', value: createdFrom } as any);
+    if (createdTo) filterFields.push({ field: 'created_at', operation: 'le', value: createdTo } as any);
+    if (updatedFrom) filterFields.push({ field: 'updated_at', operation: 'ge', value: updatedFrom } as any);
+    if (updatedTo) filterFields.push({ field: 'updated_at', operation: 'le', value: updatedTo } as any);
     if (completedFrom) filterFields.push({ field: 'completedOn', operation: 'ge', value: completedFrom } as any);
     if (completedTo) filterFields.push({ field: 'completedOn', operation: 'le', value: completedTo } as any);
     const crit: SearchCriteria = {
@@ -136,9 +136,9 @@ export default function WorkOrdersClientPage({
         title: 'title',
         priority: 'priority',
         status: 'status',
-        dueDate: 'due_date',
-        createdAt: 'createdAt',
-        updatedAt: 'updatedAt',
+        due_date: 'due_date',
+        created_at: 'created_at',
+        updated_at: 'updated_at',
         completedOn: 'completedOn'
       };
       const field = sortModel[0].field;
@@ -247,7 +247,7 @@ export default function WorkOrdersClientPage({
         />
       </EntityFiltersDrawer>
       {tab === 'calendar' && (
-        <WorkOrdersCalendar onDateClick={(date) => { setCreateInitialDueDate(date); setCreateOpen(true); }} />
+        <WorkOrdersCalendar onDateClick={(date) => { setCreateInitialdue_date(date); setCreateOpen(true); }} />
       )}
       {tab === 'list' && (
         <>
@@ -286,7 +286,7 @@ export default function WorkOrdersClientPage({
           // call load via toggling deps by changing page to 0
           setPage(0);
         }}
-        initialDueDate={createInitialDueDate}
+        initialdue_date={createInitialdue_date}
       />
 
       {editId != null && (

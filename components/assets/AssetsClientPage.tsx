@@ -103,10 +103,10 @@ export default function AssetsClientPage({
     if (assignedTo.length) filterFields.push({ field: 'assignedTo', operation: 'inm', value: '', values: assignedTo.map((o: any) => o.id) } as any);
     if (customers.length) filterFields.push({ field: 'customer', operation: 'inm', value: '', values: customers.map((o: any) => o.id) } as any);
     if (vendors.length) filterFields.push({ field: 'vendor', operation: 'inm', value: '', values: vendors.map((o: any) => o.id) } as any);
-    if (createdFrom) filterFields.push({ field: 'createdAt', operation: 'ge', value: createdFrom } as any);
-    if (createdTo) filterFields.push({ field: 'createdAt', operation: 'le', value: createdTo } as any);
-    if (updatedFrom) filterFields.push({ field: 'updatedAt', operation: 'ge', value: updatedFrom } as any);
-    if (updatedTo) filterFields.push({ field: 'updatedAt', operation: 'le', value: updatedTo } as any);
+    if (createdFrom) filterFields.push({ field: 'created_at', operation: 'ge', value: createdFrom } as any);
+    if (createdTo) filterFields.push({ field: 'created_at', operation: 'le', value: createdTo } as any);
+    if (updatedFrom) filterFields.push({ field: 'updated_at', operation: 'ge', value: updatedFrom } as any);
+    if (updatedTo) filterFields.push({ field: 'updated_at', operation: 'le', value: updatedTo } as any);
     const crit: SearchCriteria = { pageNum: page, pageSize, filterFields };
     if (sortModel.length) crit.sortField = sortModel[0].field, crit.direction = (sortModel[0].sort === 'desc' ? 'DESC' : 'ASC');
     return crit;
@@ -220,7 +220,7 @@ export default function AssetsClientPage({
               }
             },
             { field: 'location', headerName: 'Location', width: 220, valueGetter: (p: any) => p?.row?.location?.name || '' },
-            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
+            { field: 'updated_at', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
           ] as any}
           primaryField="name"
           fetchChildren={async (parentId) => {
@@ -292,7 +292,7 @@ function AssetDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { id:
         <div><b>Status:</b> <Chip size="small" label={data?.status || 'UNKNOWN'} /></div>
         <div><b>Archived:</b> {data?.archived ? 'Yes' : 'No'}</div>
         <div><b>Has Children:</b> {data?.hasChildren ? 'Yes' : 'No'}</div>
-        <div><b>Custom ID:</b> {data?.customId || ''}</div>
+        <div><b>Custom ID:</b> {data?.custom_id || ''}</div>
         <div><b>Model:</b> {data?.model || ''}</div>
         <div><b>Serial Number:</b> {data?.serialNumber || ''}</div>
         <div><b>Barcode:</b> {data?.barCode || ''}</div>
@@ -300,7 +300,7 @@ function AssetDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { id:
         <div><b>Power:</b> {data?.power || ''}</div>
         <div><b>Acquisition Cost:</b> {data?.acquisitionCost != null ? data.acquisitionCost : ''}</div>
         <div><b>Area:</b> {data?.area || ''}</div>
-        <div><b>Location:</b> {data?.location?.name || ''}{data?.location?.customId ? ` (${data.location.customId})` : ''}</div>
+        <div><b>Location:</b> {data?.location?.name || ''}{data?.location?.custom_id ? ` (${data.location.custom_id})` : ''}</div>
         {data?.parentAsset && (<div><b>Parent Asset:</b> {data.parentAsset.name || `#${data.parentAsset.id}`}</div>)}
         <div><b>Primary User:</b> {data?.primaryUser?.name || [data?.primaryUser?.firstName, data?.primaryUser?.lastName].filter(Boolean).join(' ') || ''}</div>
         {Array.isArray(data?.teams) && data.teams.length > 0 && (

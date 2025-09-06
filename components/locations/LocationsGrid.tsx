@@ -14,8 +14,8 @@ export type LocationRow = {
   id: number;
   name?: string;
   address?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export default function LocationsGrid({
@@ -50,14 +50,14 @@ export default function LocationsGrid({
     { field: 'name', headerName: 'Name', flex: 1, minWidth: 220 },
     { field: 'address', headerName: 'Address', flex: 1, minWidth: 220 },
     {
-      field: 'updatedAt', headerName: 'Updated', width: 170,
+      field: 'updated_at', headerName: 'Updated', width: 170,
       renderCell: (params: any) => {
         const v = params?.row?.updated_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
       }
     },
     {
-      field: 'createdAt', headerName: 'Created', width: 170,
+      field: 'created_at', headerName: 'Created', width: 170,
       renderCell: (params: any) => {
         const v = params?.row?.created_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;

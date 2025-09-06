@@ -26,7 +26,7 @@ type Asset = {
   manufacturer?: string | null;
   power?: string | null;
   acquisitionCost?: number | null;
-  customId?: string | null;
+  custom_id?: string | null;
   inServiceDate?: string | null;
   warrantyExpirationDate?: string | null;
   additionalInfos?: string | null;
@@ -48,7 +48,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
   const [manufacturer, setManufacturer] = useState('');
   const [power, setPower] = useState('');
   const [acquisitionCost, setAcquisitionCost] = useState('');
-  const [customId, setCustomId] = useState('');
+  const [custom_id, setCustomId] = useState('');
   const [inServiceDate, setInServiceDate] = useState('');
   const [warrantyExpirationDate, setWarrantyExpirationDate] = useState('');
   const [additionalInfos, setAdditionalInfos] = useState('');
@@ -79,7 +79,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
           manufacturer: (data as any).manufacturer || null,
           power: (data as any).power || null,
           acquisitionCost: (data as any).acquisitionCost ?? null,
-          customId: (data as any).customId || null,
+          custom_id: (data as any).custom_id || null,
           inServiceDate: (data as any).inServiceDate || null,
           warrantyExpirationDate: (data as any).warrantyExpirationDate || null,
           additionalInfos: (data as any).additionalInfos || null
@@ -97,7 +97,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
         setManufacturer(next.manufacturer || '');
         setPower(next.power || '');
         setAcquisitionCost(next.acquisitionCost != null ? String(next.acquisitionCost) : '');
-        setCustomId(next.customId || '');
+        setCustomId(next.custom_id || '');
         setInServiceDate(next.inServiceDate ? String(next.inServiceDate).substring(0,10) : '');
         setWarrantyExpirationDate(next.warrantyExpirationDate ? String(next.warrantyExpirationDate).substring(0,10) : '');
         setAdditionalInfos(next.additionalInfos || '');
@@ -127,7 +127,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
       payload.manufacturer = manufacturer || null;
       payload.power = power || null;
       payload.acquisitionCost = acquisitionCost.trim() ? Number(acquisitionCost) : null;
-      payload.customId = customId.trim() || null;
+      payload.custom_id = custom_id.trim() || null;
       payload.inServiceDate = inServiceDate || null;
       payload.warrantyExpirationDate = warrantyExpirationDate || null;
       payload.additionalInfos = additionalInfos || null;
@@ -258,7 +258,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
             <TextField label={t('manufacturer') || 'Manufacturer'} value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} fullWidth />
             <TextField label={t('power') || 'Power'} value={power} onChange={(e) => setPower(e.target.value)} fullWidth />
             <TextField label={t('acquisition_cost') || 'Acquisition Cost'} type="number" value={acquisitionCost} onChange={(e) => setAcquisitionCost(e.target.value)} fullWidth />
-            <TextField label={t('custom_id') || 'Custom ID'} value={customId} onChange={(e) => setCustomId(e.target.value)} fullWidth />
+            <TextField label={t('custom_id') || 'Custom ID'} value={custom_id} onChange={(e) => setCustomId(e.target.value)} fullWidth />
             <TextField label={t('in_service_date') || 'In Service Date'} type="date" value={inServiceDate} onChange={(e) => setInServiceDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
             <TextField label={t('warranty_expiration_date') || 'Warranty Expiration'} type="date" value={warrantyExpirationDate} onChange={(e) => setWarrantyExpirationDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
             <TextField label={t('description') || 'Description'} value={form.description} onChange={(e) => onChange({ description: e.target.value })} fullWidth multiline minRows={3} />

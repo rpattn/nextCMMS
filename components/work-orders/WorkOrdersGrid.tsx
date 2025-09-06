@@ -19,9 +19,9 @@ export type WorkOrderRow = {
   description?: string;
   priority?: string;
   status?: string;
-  dueDate?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  due_date?: string;
+  created_at?: string;
+  updated_at?: string;
   completedOn?: string;
 };
 
@@ -123,7 +123,7 @@ export default function WorkOrdersGrid({
       }
       ,
       {
-        field: 'updatedAt',
+        field: 'updated_at',
         headerName: t('Updated') as string,
         width: 170,
         renderCell: (params: any) => {
@@ -132,7 +132,7 @@ export default function WorkOrdersGrid({
         }
       },
       {
-        field: 'createdAt',
+        field: 'created_at',
         headerName: t('Created') as string,
         width: 170,
         renderCell: (params: any) => {

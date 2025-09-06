@@ -7,14 +7,14 @@ import { useI18n } from '@/components/providers/I18nProvider';
 import RemoteSearchSelect, { RemoteOption } from '@/components/common/RemoteSearchSelect';
 import MultiRemoteSearchSelect from '@/components/common/MultiRemoteSearchSelect';
 
-export default function CreateWorkOrderModal({ open, onClose, onCreated, initialDueDate }: { open: boolean; onClose: () => void; onCreated?: () => void; initialDueDate?: Date | string | null }) {
+export default function CreateWorkOrderModal({ open, onClose, onCreated, initialdue_date }: { open: boolean; onClose: () => void; onCreated?: () => void; initialdue_date?: Date | string | null }) {
   const { t } = useI18n();
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH'>('LOW');
-  const [dueDate, setDueDate] = useState<string>('');
+  const [due_date, setdue_date] = useState<string>('');
   const [description, setDescription] = useState('');
-  const [estimatedStartDate, setEstimatedStartDate] = useState<string>('');
-  const [estimatedDuration, setEstimatedDuration] = useState<string>('');
+  const [estimated_start_date, setestimated_start_date] = useState<string>('');
+  const [estimated_duration, setEstimatedDuration] = useState<string>('');
   const [requiredSignature, setRequiredSignature] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState(false);
   const [primaryUser, setPrimaryUser] = useState<RemoteOption | null>(null);
@@ -27,28 +27,28 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
   // Prefill due date if provided when opening
   useEffect(() => {
     if (!open) return;
-    if (!initialDueDate) return;
+    if (!initialdue_date) return;
     try {
-      const d = typeof initialDueDate === 'string' ? new Date(initialDueDate) : initialDueDate;
+      const d = typeof initialdue_date === 'string' ? new Date(initialdue_date) : initialdue_date;
       if (!isNaN(d.getTime())) {
         // YYYY-MM-DD
         const iso = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
           .toISOString()
           .slice(0, 10);
-        setDueDate(iso);
+        setdue_date(iso);
       }
     } catch {}
-  }, [open, initialDueDate]);
+  }, [open, initialdue_date]);
 
   const submit = async () => {
     setSubmitting(true);
     try {
       const payload: any = { title, priority, description };
-      if (dueDate) payload.dueDate = dueDate;
-      if (estimatedStartDate) payload.estimatedStartDate = estimatedStartDate;
-      if (estimatedDuration) payload.estimatedDuration = Number(estimatedDuration);
+      if (due_date) payload.due_date = due_date;
+      if (estimated_start_date) payload.estimated_start_date = estimated_start_date;
+      if (estimated_duration) payload.estimated_duration = Number(estimated_duration);
       payload.requiredSignature = !!requiredSignature;
-      if (primaryUser?.id) payload.primaryUser = { id: primaryUser.id };
+      if (primaryUser?.id) payload.primaryUser = primaryUser.id;
       if (location?.id) payload.location = { id: location.id };
       if (team?.id) payload.team = { id: team.id };
       if (asset?.id) payload.asset = { id: asset.id };
@@ -57,7 +57,7 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
       await api('work-orders', { method: 'POST', body: JSON.stringify(payload) });
       onClose();
       onCreated?.();
-      setTitle(''); setDescription(''); setDueDate(''); setPriority('LOW'); setEstimatedStartDate(''); setEstimatedDuration(''); setRequiredSignature(false);
+      setTitle(''); setDescription(''); setdue_date(''); setPriority('LOW'); setestimated_start_date(''); setEstimatedDuration(''); setRequiredSignature(false);
       setPrimaryUser(null); setLocation(null); setTeam(null); setAsset(null); setAssignedTo([]); setCustomers([]);
     } catch (e) {
       alert('Failed to create work order');
@@ -77,9 +77,9 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
               <MenuItem key={p} value={p}>{p}</MenuItem>
             ))}
           </TextField>
-          <TextField label={t('due_col') || 'Due'} type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
-          <TextField label={t('estimated_start_date') || 'Estimated Start'} type="date" value={estimatedStartDate} onChange={(e) => setEstimatedStartDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
-          <TextField label={t('estimated_duration') || 'Estimated Duration (h)'} type="number" inputProps={{ step: '0.25', min: '0' }} value={estimatedDuration} onChange={(e) => setEstimatedDuration(e.target.value)} fullWidth />
+          <TextField label={t('due_col') || 'Due'} type="date" value={due_date} onChange={(e) => setdue_date(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
+          <TextField label={t('estimated_start_date') || 'Estimated Start'} type="date" value={estimated_start_date} onChange={(e) => setestimated_start_date(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
+          <TextField label={t('estimated_duration') || 'Estimated Duration (h)'} type="number" inputProps={{ step: '0.25', min: '0' }} value={estimated_duration} onChange={(e) => setEstimatedDuration(e.target.value)} fullWidth />
           <FormControlLabel control={<Checkbox checked={requiredSignature} onChange={(e) => setRequiredSignature(e.target.checked)} />} label={t('required_signature') || 'Required Signature'} />
           <TextField label={t('description') || 'Description'} value={description} onChange={(e) => setDescription(e.target.value)} fullWidth multiline minRows={3} />
           <RemoteSearchSelect
@@ -98,7 +98,8 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
               };
               const res: any = await api('users/search', { method: 'POST', body: JSON.stringify(criteria) });
               const content = res?.content || [];
-              return content.map((u: any) => ({ id: u.id, label: u.name || u.email || `${u.firstName || ''} ${u.lastName || ''}`.trim() }));
+              console.log(content)
+              return content.map((u: any) => ({ id: u.ID, label: u.Email || u.Name || `${u.Name || ''} ${u.Name || ''}`.trim() }));
             }}
           />
           <RemoteSearchSelect

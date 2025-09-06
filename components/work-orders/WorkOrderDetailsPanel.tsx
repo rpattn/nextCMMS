@@ -14,18 +14,18 @@ import { useI18n } from '@/components/providers/I18nProvider';
 
 type WorkOrder = {
   id: string;
-  customId?: string;
+  custom_id?: string;
   title?: string;
   description?: string;
   priority?: 'HIGH' | 'MEDIUM' | 'LOW' | 'NONE' | string;
   status?: string;
-  dueDate?: string;
-  estimatedStartDate?: string | null;
-  estimatedDuration?: number | null;
+  due_date?: string;
+  estimated_start_date?: string | null;
+  estimated_duration?: number | null;
   requiredSignature?: boolean;
   archived?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
   completedOn?: string | null;
   createdBy?: number;
   updatedBy?: number;
@@ -66,7 +66,7 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
     };
   }, [id, reloadKey]);
 
-  const due = useMemo(() => (wo?.dueDate ? new Date(wo.dueDate) : null), [wo?.dueDate]);
+  const due = useMemo(() => (wo?.due_date ? new Date(wo.due_date) : null), [wo?.due_date]);
   const overdue = useMemo(() => (due ? due.getTime() < Date.now() : false), [due]);
   const priorityColor = wo?.priority === 'HIGH' ? 'error' : wo?.priority === 'MEDIUM' ? 'warning' : wo?.priority === 'LOW' ? 'success' : 'default';
   const fmtDate = (v?: string | null, withTime = false) => {
@@ -83,7 +83,7 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
   return (
     <Box sx={{ p: 2, width: 420, maxWidth: '100vw' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-        <Typography variant="h6">{wo ? `${wo.customId ? `#${wo.customId}` : `#${wo.id}`} ${wo.title || ''}` : t('loading')}</Typography>
+        <Typography variant="h6">{wo ? `${wo.custom_id ? `#${wo.custom_id}` : `#${wo.id}`} ${wo.title || ''}` : t('loading')}</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {wo && (
             <Button size="small" startIcon={<EditTwoToneIcon />} onClick={() => setEditOpen(true)}>
@@ -118,13 +118,13 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
               <Divider sx={{ my: 1 }} />
               {/* Key info grid */}
               <Grid container spacing={1} sx={{ mb: 1 }}>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('id_col') || 'ID'}</Typography><Typography variant="body2">{wo.customId || wo.id}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('id_col') || 'ID'}</Typography><Typography variant="body2">{wo.custom_id || wo.id}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('status') || 'Status'}</Typography><Typography variant="body2">{wo.status || ''}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('due_col') || 'Due Date'}</Typography><Typography variant="body2">{fmtDate(wo.dueDate)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('created_at') || 'Created At'}</Typography><Typography variant="body2">{fmtDate(wo.createdAt, true)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('updated_at') || 'Updated At'}</Typography><Typography variant="body2">{fmtDate(wo.updatedAt, true)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_start_date') || 'Estimated Start'}</Typography><Typography variant="body2">{fmtDate(wo.estimatedStartDate || undefined)}</Typography></Grid>
-                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_duration') || 'Estimated Duration (h)'}</Typography><Typography variant="body2">{wo.estimatedDuration ?? ''}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('due_col') || 'Due Date'}</Typography><Typography variant="body2">{fmtDate(wo.due_date)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('created_at') || 'Created At'}</Typography><Typography variant="body2">{fmtDate(wo.created_at, true)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('updated_at') || 'Updated At'}</Typography><Typography variant="body2">{fmtDate(wo.updated_at, true)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_start_date') || 'Estimated Start'}</Typography><Typography variant="body2">{fmtDate(wo.estimated_start_date || undefined)}</Typography></Grid>
+                <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('estimated_duration') || 'Estimated Duration (h)'}</Typography><Typography variant="body2">{wo.estimated_duration ?? ''}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('required_signature') || 'Required Signature'}</Typography><Typography variant="body2">{boolText(wo.requiredSignature)}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('archived') || 'Archived'}</Typography><Typography variant="body2">{boolText(wo.archived)}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('category') || 'Category'}</Typography><Typography variant="body2">{wo.category?.name || ''}</Typography></Grid>

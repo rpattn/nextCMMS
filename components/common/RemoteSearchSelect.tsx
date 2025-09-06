@@ -29,6 +29,8 @@ export default function RemoteSearchSelect({ label, placeholder, value, onChange
       setLoading(true);
       try {
         const res = await search(input.trim());
+        // convert key ID to id for consistency
+        res.map((r) => { if ((r as any).ID && !r.id) (r as any).id = (r as any).ID; return r; });
         setOptions(res || []);
       } catch {
         setOptions([]);

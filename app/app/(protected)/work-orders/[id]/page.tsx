@@ -6,7 +6,7 @@ type WorkOrder = {
   title?: string;
   description?: string;
   priority?: 'HIGH' | 'MEDIUM' | 'LOW' | 'NONE' | string;
-  dueDate?: string;
+  due_date?: string;
   status?: string;
 };
 
@@ -29,7 +29,7 @@ export default async function WorkOrderDetails(props: { params: Promise<{ id: st
   const id = Number(params.id);
   const wo = await getWorkOrder(id);
   if (!wo) return <Typography sx={{ p: 3 }}>Work order not found.</Typography>;
-  const due = wo.dueDate ? new Date(wo.dueDate) : null;
+  const due = wo.due_date ? new Date(wo.due_date) : null;
   const overdue = due ? due.getTime() < Date.now() : false;
 
   return (

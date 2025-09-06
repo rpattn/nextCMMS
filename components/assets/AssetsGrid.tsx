@@ -17,8 +17,8 @@ export type AssetRow = {
   description?: string;
   status?: string;
   location?: { name?: string } | null;
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export default function AssetsGrid({
@@ -64,14 +64,14 @@ export default function AssetsGrid({
       renderCell: (params: any) => <span>{params?.row?.location?.name || ''}</span>
     },
     {
-      field: 'updatedAt', headerName: 'Updated', width: 170,
+      field: 'updated_at', headerName: 'Updated', width: 170,
       renderCell: (params: any) => {
         const v = params?.row?.updated_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;
       }
     },
     {
-      field: 'createdAt', headerName: 'Created', width: 170,
+      field: 'created_at', headerName: 'Created', width: 170,
       renderCell: (params: any) => {
         const v = params?.row?.created_at as string | undefined;
         return <span>{v ? new Date(v).toLocaleString() : ''}</span>;

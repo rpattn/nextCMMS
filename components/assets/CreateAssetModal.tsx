@@ -26,7 +26,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
   const [manufacturer, setManufacturer] = useState('');
   const [power, setPower] = useState('');
   const [acquisitionCost, setAcquisitionCost] = useState('');
-  const [customId, setCustomId] = useState('');
+  const [custom_id, setCustomId] = useState('');
   const [inServiceDate, setInServiceDate] = useState('');
   const [warrantyExpirationDate, setWarrantyExpirationDate] = useState('');
   const [additionalInfos, setAdditionalInfos] = useState('');
@@ -50,7 +50,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
       if (manufacturer) payload.manufacturer = manufacturer;
       payload.power = power.trim() ? power : null;
       payload.acquisitionCost = acquisitionCost.trim() ? Number(acquisitionCost) : null;
-      if (customId.trim()) payload.customId = customId.trim();
+      if (custom_id.trim()) payload.custom_id = custom_id.trim();
       payload.inServiceDate = inServiceDate || null;
       payload.warrantyExpirationDate = warrantyExpirationDate || null;
       if (additionalInfos) payload.additionalInfos = additionalInfos;
@@ -181,7 +181,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
           <TextField label={t('manufacturer') || 'Manufacturer'} value={manufacturer} onChange={(e) => setManufacturer(e.target.value)} fullWidth />
           <TextField label={t('power') || 'Power'} value={power} onChange={(e) => setPower(e.target.value)} fullWidth />
           <TextField label={t('acquisition_cost') || 'Acquisition Cost'} type="number" value={acquisitionCost} onChange={(e) => setAcquisitionCost(e.target.value)} fullWidth />
-          <TextField label={t('custom_id') || 'Custom ID'} value={customId} onChange={(e) => setCustomId(e.target.value)} fullWidth />
+          <TextField label={t('custom_id') || 'Custom ID'} value={custom_id} onChange={(e) => setCustomId(e.target.value)} fullWidth />
           <TextField label={t('in_service_date') || 'In Service Date'} type="date" value={inServiceDate} onChange={(e) => setInServiceDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
           <TextField label={t('warranty_expiration_date') || 'Warranty Expiration'} type="date" value={warrantyExpirationDate} onChange={(e) => setWarrantyExpirationDate(e.target.value)} fullWidth InputLabelProps={{ shrink: true }} />
           <TextField label={t('description') || 'Description'} value={description} onChange={(e) => setDescription(e.target.value)} fullWidth multiline minRows={3} />

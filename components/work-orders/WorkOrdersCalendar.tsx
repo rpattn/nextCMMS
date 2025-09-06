@@ -48,7 +48,7 @@ export default function WorkOrdersCalendar({ onDateClick }: { onDateClick?: (dat
       const wo = e.event;
       const id = wo.id;
       const title = wo.title ? `#${id} ${wo.title}` : `#${id}`;
-      const startStr = (wo as any).dueDate || wo.startDate || e.date;
+      const startStr = (wo as any).due_date || wo.startDate || e.date;
       const endStr = wo.endDate || undefined;
       const pri = (wo as any)?.priority;
       const color =

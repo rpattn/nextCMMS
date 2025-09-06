@@ -12,7 +12,7 @@ type Location = {
   name?: string;
   address?: string;
   parentLocation?: { id: number; name?: string } | null;
-  customId?: string | null;
+  custom_id?: string | null;
   longitude?: number | null;
   latitude?: number | null;
   teams?: Array<{ id: number; name?: string }>;
@@ -26,7 +26,7 @@ export default function EditLocationModal({ id, open, onClose, onSaved }: { id: 
   const [form, setForm] = useState<Location | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [parentLocation, setParentLocation] = useState<RemoteOption | null>(null);
-  const [customId, setCustomId] = useState('');
+  const [custom_id, setCustomId] = useState('');
   const [longitude, setLongitude] = useState<string>('');
   const [latitude, setLatitude] = useState<string>('');
   const [teams, setTeams] = useState<RemoteOption[]>([]);
@@ -41,9 +41,9 @@ export default function EditLocationModal({ id, open, onClose, onSaved }: { id: 
       try {
         const data = await api<Location>(`locations/${id}`);
         if (!active) return;
-        setForm({ id, name: data.name || '', address: data.address || '', parentLocation: data.parentLocation || null, customId: (data as any).customId || null, longitude: (data as any).longitude ?? null, latitude: (data as any).latitude ?? null, teams: (data as any).teams || [], vendors: (data as any).vendors || [], customers: (data as any).customers || [], workers: (data as any).workers || [] });
+        setForm({ id, name: data.name || '', address: data.address || '', parentLocation: data.parentLocation || null, custom_id: (data as any).custom_id || null, longitude: (data as any).longitude ?? null, latitude: (data as any).latitude ?? null, teams: (data as any).teams || [], vendors: (data as any).vendors || [], customers: (data as any).customers || [], workers: (data as any).workers || [] });
         setParentLocation(data.parentLocation ? { id: data.parentLocation.id, label: data.parentLocation.name || `#${data.parentLocation.id}` } : null);
-        setCustomId((data as any).customId || '');
+        setCustomId((data as any).custom_id || '');
         setLongitude((data as any).longitude != null ? String((data as any).longitude) : '');
         setLatitude((data as any).latitude != null ? String((data as any).latitude) : '');
         setTeams(((data as any).teams || []).map((t: any) => ({ id: t.id, label: t.name || `#${t.id}` })));
@@ -63,7 +63,7 @@ export default function EditLocationModal({ id, open, onClose, onSaved }: { id: 
     try {
       const payload: any = { name: form.name, address: form.address };
       if (parentLocation?.id) payload.parentLocation = { id: parentLocation.id }; else payload.parentLocation = null;
-      payload.customId = customId.trim() || null;
+      payload.custom_id = custom_id.trim() || null;
       payload.longitude = longitude.trim() ? Number(longitude) : null;
       payload.latitude = latitude.trim() ? Number(latitude) : null;
       payload.teams = teams.map((t) => ({ id: t.id }));
@@ -88,7 +88,7 @@ export default function EditLocationModal({ id, open, onClose, onSaved }: { id: 
           <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField label={t('name') || 'Name'} value={form.name} onChange={(e) => onChange({ name: e.target.value })} fullWidth required />
             <TextField label={t('address') || 'Address'} value={form.address} onChange={(e) => onChange({ address: e.target.value })} fullWidth multiline minRows={2} />
-            <TextField label={t('custom_id') || 'Custom ID'} value={customId} onChange={(e) => setCustomId(e.target.value)} fullWidth />
+            <TextField label={t('custom_id') || 'Custom ID'} value={custom_id} onChange={(e) => setCustomId(e.target.value)} fullWidth />
             <TextField label={t('longitude') || 'Longitude'} type="number" value={longitude} onChange={(e) => setLongitude(e.target.value)} fullWidth />
             <TextField label={t('latitude') || 'Latitude'} type="number" value={latitude} onChange={(e) => setLatitude(e.target.value)} fullWidth />
             <RemoteSearchSelect

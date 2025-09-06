@@ -12,7 +12,7 @@ export default function CreateLocationModal({ open, onClose, onCreated }: { open
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
   const [parentLocation, setParentLocation] = useState<RemoteOption | null>(null);
-  const [customId, setCustomId] = useState('');
+  const [custom_id, setCustomId] = useState('');
   const [longitude, setLongitude] = useState<string>('');
   const [latitude, setLatitude] = useState<string>('');
   const [teams, setTeams] = useState<RemoteOption[]>([]);
@@ -26,7 +26,7 @@ export default function CreateLocationModal({ open, onClose, onCreated }: { open
     try {
       const payload: any = { name, address };
       if (parentLocation?.id) payload.parentLocation = { id: parentLocation.id };
-      if (customId.trim()) payload.customId = customId.trim();
+      if (custom_id.trim()) payload.custom_id = custom_id.trim();
       payload.longitude = longitude.trim() ? Number(longitude) : null;
       payload.latitude = latitude.trim() ? Number(latitude) : null;
       if (teams.length) payload.teams = teams.map((t) => ({ id: t.id }));
@@ -53,7 +53,7 @@ export default function CreateLocationModal({ open, onClose, onCreated }: { open
         <Stack spacing={2} sx={{ mt: 1 }}>
           <TextField label={t('name') || 'Name'} value={name} onChange={(e) => setName(e.target.value)} fullWidth required />
           <TextField label={t('address') || 'Address'} value={address} onChange={(e) => setAddress(e.target.value)} fullWidth multiline minRows={2} />
-          <TextField label={t('custom_id') || 'Custom ID'} value={customId} onChange={(e) => setCustomId(e.target.value)} fullWidth />
+          <TextField label={t('custom_id') || 'Custom ID'} value={custom_id} onChange={(e) => setCustomId(e.target.value)} fullWidth />
           <TextField label={t('longitude') || 'Longitude'} type="number" value={longitude} onChange={(e) => setLongitude(e.target.value)} fullWidth />
           <TextField label={t('latitude') || 'Latitude'} type="number" value={latitude} onChange={(e) => setLatitude(e.target.value)} fullWidth />
           <RemoteSearchSelect

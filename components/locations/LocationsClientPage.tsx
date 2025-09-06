@@ -56,7 +56,7 @@ export default function LocationsClientPage({
   // Filters state
   const [parentLocation, setParentLocation] = useState<any | null>(null);
   const [address, setAddress] = useState<string | null>(null);
-  const [customId, setCustomId] = useState<string | null>(null);
+  const [custom_id, setCustomId] = useState<string | null>(null);
   const [hasChildren, setHasChildren] = useState<boolean | null>(null);
   const [teams, setTeams] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
@@ -77,20 +77,20 @@ export default function LocationsClientPage({
     // filterFields.push({ field: 'archived', operation: 'eq', value: false } as any);
     if (parentLocation?.id) filterFields.push({ field: 'parentLocation', operation: 'in', value: '', values: [parentLocation.id] } as any);
     if (address) filterFields.push({ field: 'address', operation: 'cn', value: address } as any);
-    if (customId) filterFields.push({ field: 'customId', operation: 'cn', value: customId } as any);
+    if (custom_id) filterFields.push({ field: 'custom_id', operation: 'cn', value: custom_id } as any);
     if (hasChildren != null) filterFields.push({ field: 'hasChildren', operation: 'eq', value: !!hasChildren } as any);
     if (teams.length) filterFields.push({ field: 'team', operation: 'in', value: '', values: teams.map((o: any) => o.id) } as any);
     if (vendors.length) filterFields.push({ field: 'vendor', operation: 'inm', value: '', values: vendors.map((o: any) => o.id) } as any);
     if (customers.length) filterFields.push({ field: 'customer', operation: 'inm', value: '', values: customers.map((o: any) => o.id) } as any);
     if (workers.length) filterFields.push({ field: 'workers', operation: 'inm', value: '', values: workers.map((o: any) => o.id) } as any);
-    if (createdFrom) filterFields.push({ field: 'createdAt', operation: 'ge', value: createdFrom } as any);
-    if (createdTo) filterFields.push({ field: 'createdAt', operation: 'le', value: createdTo } as any);
-    if (updatedFrom) filterFields.push({ field: 'updatedAt', operation: 'ge', value: updatedFrom } as any);
-    if (updatedTo) filterFields.push({ field: 'updatedAt', operation: 'le', value: updatedTo } as any);
+    if (createdFrom) filterFields.push({ field: 'created_at', operation: 'ge', value: createdFrom } as any);
+    if (createdTo) filterFields.push({ field: 'created_at', operation: 'le', value: createdTo } as any);
+    if (updatedFrom) filterFields.push({ field: 'updated_at', operation: 'ge', value: updatedFrom } as any);
+    if (updatedTo) filterFields.push({ field: 'updated_at', operation: 'le', value: updatedTo } as any);
     const crit: SearchCriteria = { pageNum: page, pageSize, filterFields };
     if (sortModel.length) crit.sortField = sortModel[0].field, crit.direction = (sortModel[0].sort === 'desc' ? 'DESC' : 'ASC');
     return crit;
-  }, [page, pageSize, q, sortModel, parentLocation, address, customId, hasChildren, teams, vendors, customers, workers, createdFrom, createdTo, updatedFrom, updatedTo]);
+  }, [page, pageSize, q, sortModel, parentLocation, address, custom_id, hasChildren, teams, vendors, customers, workers, createdFrom, createdTo, updatedFrom, updatedTo]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -177,7 +177,7 @@ export default function LocationsClientPage({
           onParentLocationChange={(v) => { setPage(0); setParentLocation(v); }}
           address={address}
           onAddressChange={(v) => { setPage(0); setAddress(v); }}
-          customId={customId}
+          custom_id={custom_id}
           onCustomIdChange={(v) => { setPage(0); setCustomId(v); }}
           hasChildren={hasChildren}
           onHasChildrenChange={(v) => { setPage(0); setHasChildren(v); }}
@@ -237,7 +237,7 @@ export default function LocationsClientPage({
             { field: 'id', headerName: 'ID', width: 120 },
             { field: 'name', headerName: 'Name', flex: 1, minWidth: 220 },
             { field: 'address', headerName: 'Address', flex: 1, minWidth: 220 },
-            { field: 'updatedAt', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
+            { field: 'updated_at', headerName: 'Updated', width: 170, valueGetter: (p: any) => p?.row?.updated_at ? new Date(p.row.updated_at).toLocaleString() : '' }
           ] as any}
           primaryField="name"
           fetchChildren={async (parentId) => {
@@ -306,7 +306,7 @@ function LocationDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { 
         <div><b>Name:</b> {data?.name || ''}</div>
         <div><b>Address:</b> {data?.address || ''}</div>
         <div><b>Parent Location:</b> {data?.parentLocation?.name || ''}</div>
-        <div><b>Custom ID:</b> {data?.customId || ''}</div>
+        <div><b>Custom ID:</b> {data?.custom_id || ''}</div>
         <div><b>Coordinates:</b> {data?.latitude != null || data?.longitude != null ? `${data?.latitude ?? ''}, ${data?.longitude ?? ''}` : ''}</div>
         <div><b>Has Children:</b> {data?.hasChildren ? 'Yes' : 'No'}</div>
         {Array.isArray(data?.teams) && data.teams.length > 0 && (
