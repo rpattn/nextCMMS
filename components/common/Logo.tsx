@@ -17,7 +17,7 @@ export default function Logo({ size = 56 }: { size?: number }) {
           onError={(e: any) => {
             // if image missing, replace with text fallback
             const parent = e.currentTarget?.parentElement;
-            if (parent) parent.innerHTML = '<span style="font-weight:700;font-size:20px">Atlas CMMS</span>';
+            if (parent) parent.innerHTML = '<span style="font-weight:700;font-size:20px">Next CMMS</span>';
           }}
         />
       </Link>
