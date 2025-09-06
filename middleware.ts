@@ -6,7 +6,7 @@ export function middleware(req: NextRequest) {
   if (pathname.startsWith('/app')) {
     const token = req.cookies.get('session')?.value;
     if (!token) {
-      const url = new URL('/login', req.url);
+      const url = new URL('/account/login', req.url);
       const fullPath = req.nextUrl.pathname + (req.nextUrl.search || '');
       url.searchParams.set('next', fullPath);
       return NextResponse.redirect(url);

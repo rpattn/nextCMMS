@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { memo } from 'react';
 import { Box } from '@mui/material';
 
-export default function Logo({ size = 56 }: { size?: number }) {
+function Logo({ size = 56 }: { size?: number }) {
   return (
     <Box sx={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
       <Link href="/">
@@ -14,6 +15,8 @@ export default function Logo({ size = 56 }: { size?: number }) {
           alt="Logo"
           width={size}
           height={size}
+          priority
+          unoptimized
           onError={(e: any) => {
             // if image missing, replace with text fallback
             const parent = e.currentTarget?.parentElement;
@@ -24,4 +27,6 @@ export default function Logo({ size = 56 }: { size?: number }) {
     </Box>
   );
 }
+
+export default memo(Logo);
 

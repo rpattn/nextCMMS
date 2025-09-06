@@ -15,7 +15,7 @@ export async function getSession(): Promise<Session | null> {
 
 export async function requireSession(): Promise<Session> {
   const session = await getSession();
-  if (!session) redirect('/login');
+  if (!session) redirect('/account/login');
   return session;
 }
 

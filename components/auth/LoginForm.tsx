@@ -42,7 +42,28 @@ export default function LoginForm() {
     setLoading(false);
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setFormError(data?.error || 'Wrong credentials');
+      const raw = (data?.error || '').toString();
+      const normalized = raw.toLowerCase().trim().replace(/[\s_-]+/g, '_');
+      // 401 mfa_required -> prompt for code
+      if (res.status === 401 && normalized === 'mfa_required') {
+        try {
+          sessionStorage.setItem('pendingLogin', JSON.stringify({ email, password }));
+        } catch {}
+        const params = new URLSearchParams();
+        params.set('next', next);
+        if (email) params.set('email', email);
+        router.replace(`/account/mfa-challenge?${params.toString()}`);
+        return;
+      }
+      // 403 mfa_required -> must set up MFA
+      if (res.status === 403 && normalized === 'mfa_required') {
+        const params = new URLSearchParams();
+        params.set('next', next);
+        if (email) params.set('email', email);
+        router.replace(`/account/mfa-setup?${params.toString()}`);
+        return;
+      }
+      setFormError(raw || 'Wrong credentials');
       return;
     }
     router.replace(next);

@@ -40,14 +40,27 @@ async function forward(req: NextRequest, pathParts: string[]) {
 
   const res = await fetch(url, init);
 
-  // Pass through response body & content-type
-  const text = await res.text();
-  return new NextResponse(text, {
+  // Stream body through and preserve important headers, including Set-Cookie
+  const response = new NextResponse(res.body, {
     status: res.status,
     headers: {
-      'Content-Type': res.headers.get('content-type') || 'application/json',
+      'content-type': res.headers.get('content-type') || 'application/json',
+      // Pass basic caching headers if present
+      ...(res.headers.get('cache-control') ? { 'cache-control': res.headers.get('cache-control') as string } : {}),
     },
   });
+
+  // Append Set-Cookie headers (supports multiple cookies)
+  const getSetCookie = (res.headers as any).getSetCookie?.bind(res.headers);
+  const cookies = typeof getSetCookie === 'function' ? getSetCookie() : undefined;
+  if (cookies && Array.isArray(cookies)) {
+    for (const c of cookies) response.headers.append('set-cookie', c);
+  } else {
+    const sc = res.headers.get('set-cookie');
+    if (sc) response.headers.append('set-cookie', sc);
+  }
+
+  return response;
 }
 
 
