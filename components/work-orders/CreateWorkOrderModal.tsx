@@ -21,7 +21,7 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
   const [location, setLocation] = useState<RemoteOption | null>(null);
   const [team, setTeam] = useState<RemoteOption | null>(null);
   const [asset, setAsset] = useState<RemoteOption | null>(null);
-  const [assignedTo, setAssignedTo] = useState<RemoteOption[]>([]);
+  const [assigned_to, setAssignedTo] = useState<RemoteOption[]>([]);
   const [customers, setCustomers] = useState<RemoteOption[]>([]);
 
   // Prefill due date if provided when opening
@@ -49,10 +49,10 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
       if (estimated_duration) payload.estimated_duration = Number(estimated_duration);
       payload.requiredSignature = !!requiredSignature;
       if (primaryUser?.id) payload.primaryUser = primaryUser.id;
-      if (location?.id) payload.location = { id: location.id };
-      if (team?.id) payload.team = { id: team.id };
-      if (asset?.id) payload.asset = { id: asset.id };
-      if (assignedTo.length) payload.assignedTo = assignedTo.map((u) => ({ id: u.id }));
+      if (location?.id) payload.location = location.id;
+      if (team?.id) payload.team = team.id;
+      if (asset?.id) payload.asset = asset.id;
+      if (assigned_to.length) payload.assigned_to = assigned_to.map((u) => (u.id));
       if (customers.length) payload.customers = customers.map((c) => ({ id: c.id }));
       await api('work-orders', { method: 'POST', body: JSON.stringify(payload) });
       onClose();
@@ -141,7 +141,7 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
           <MultiRemoteSearchSelect
             label={t('assigned_to') || 'Assigned To'}
             placeholder={t('search_users') || 'Search users...'}
-            value={assignedTo}
+            value={assigned_to}
             onChange={setAssignedTo}
             search={async (q) => {
               const criteria = {
@@ -153,8 +153,9 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
                 ]}] : []
               };
               const res: any = await api('users/search', { method: 'POST', body: JSON.stringify(criteria) });
+              console.log(res)
               const content = res?.content || [];
-              return content.map((u: any) => ({ id: u.id, label: u.name || u.email || `${u.firstName || ''} ${u.lastName || ''}`.trim() }));
+              return content.map((u: any) => ({ id: u.ID, label: u.Email || `${u.Name || ''} ${u.Email  }` }));
             }}
           />
           <MultiRemoteSearchSelect

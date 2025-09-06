@@ -21,7 +21,7 @@ type WorkOrder = {
   location?: { id: number; name?: string } | null;
   team?: { id: number; name?: string } | null;
   asset?: { id: number; name?: string } | null;
-  assignedTo?: Array<{ id: number; name?: string; firstName?: string; lastName?: string }>;
+  assigned_to?: Array<{ user_id: number; name?: string; email?: string }>;
   customers?: Array<{ id: number; name?: string }>;
 };
 
@@ -33,7 +33,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
   const [location, setLocation] = useState<RemoteOption | null>(null);
   const [team, setTeam] = useState<RemoteOption | null>(null);
   const [asset, setAsset] = useState<RemoteOption | null>(null);
-  const [assignedTo, setAssignedTo] = useState<RemoteOption[]>([]);
+  const [assigned_to, setAssignedTo] = useState<RemoteOption[]>([]);
   const [customers, setCustomers] = useState<RemoteOption[]>([]);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
           location: data.location || null,
           team: data.team || null,
           asset: data.asset || null,
-          assignedTo: data.assignedTo || [],
+          assigned_to: data.assigned_to || [],
           customers: data.customers || []
         };
         setForm(nextForm);
@@ -65,7 +65,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
         setLocation(nextForm.location ? { id: nextForm.location.id, label: nextForm.location.name || `#${nextForm.location.id}` } : null);
         setTeam(nextForm.team ? { id: nextForm.team.id, label: nextForm.team.name || `#${nextForm.team.id}` } : null);
         setAsset(nextForm.asset ? { id: nextForm.asset.id, label: nextForm.asset.name || `#${nextForm.asset.id}` } : null);
-        setAssignedTo((nextForm.assignedTo || []).map((u) => ({ id: u.id, label: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || `#${u.id}` })));
+        setAssignedTo((nextForm.assigned_to || []).map((u) => ({ id: u.user_id, label: u.email || `${u.name || ''} ${u.email  }` })));
         setCustomers((nextForm.customers || []).map((c) => ({ id: c.id, label: c.name || `#${c.id}` })));
       } catch (e) {
         console.error(e);
@@ -89,11 +89,11 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
       payload.requiredSignature = !!form.requiredSignature;
       payload.archived = !!form.archived;
       if (primaryUser?.id) payload.primary_worker = primaryUser.id; else payload.primaryUser = null;
-      if (location?.id) payload.location = { id: location.id }; else payload.location = null;
-      if (team?.id) payload.team = { id: team.id }; else payload.team = null;
-      if (asset?.id) payload.asset = { id: asset.id }; else payload.asset = null;
-      payload.assignedTo = assignedTo.map((u) => ({ id: u.id }));
-      payload.customers = customers.map((c) => ({ id: c.id }));
+      if (location?.id) payload.location = location.id; else payload.location = null;
+      if (team?.id) payload.team = team.id; else payload.team = null;
+      if (asset?.id) payload.asset = asset.id; else payload.asset = null;
+      payload.assigned_to = assigned_to.map((u) => (u.id));
+      payload.customers = customers.map((c) => (c.id));
       await api(`work-orders/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
       onClose();
       onSaved?.();
@@ -182,7 +182,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
             <MultiRemoteSearchSelect
               label={t('assigned_to') || 'Assigned To'}
               placeholder={t('search_users') || 'Search users...'}
-              value={assignedTo}
+              value={assigned_to}
               onChange={setAssignedTo}
               search={async (q) => {
                 const criteria = {
@@ -195,7 +195,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
                 };
                 const res: any = await api('users/search', { method: 'POST', body: JSON.stringify(criteria) });
                 const content = res?.content || [];
-                return content.map((u: any) => ({ id: u.id, label: u.name || u.email || `${u.firstName || ''} ${u.lastName || ''}`.trim() }));
+                return content.map((u: any) => ({ id: u.ID, label: u.Name || u.Email || `${u.Name || ''} ${u.Name || ''}`.trim() }));
               }}
             />
             <MultiRemoteSearchSelect

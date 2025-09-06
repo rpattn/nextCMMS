@@ -70,7 +70,7 @@ export default function WorkOrdersClientPage({
   const [locations, setLocations] = useState<RemoteOption[]>([]);
   const [teams, setTeams] = useState<RemoteOption[]>([]);
   const [primaryUsers, setPrimaryUsers] = useState<RemoteOption[]>([]);
-  const [assignedToUsers, setAssignedToUsers] = useState<RemoteOption[]>([]);
+  const [assigned_toUsers, setAssignedToUsers] = useState<RemoteOption[]>([]);
   const [customers, setCustomers] = useState<RemoteOption[]>([]);
   const [createdByUsers, setCreatedByUsers] = useState<RemoteOption[]>([]);
   const [completedByUsers, setCompletedByUsers] = useState<RemoteOption[]>([]);
@@ -117,7 +117,7 @@ export default function WorkOrdersClientPage({
     if (primaryUsers.length) filterFields.push({ field: 'primaryUser', operation: 'in', value: '', values: primaryUsers.map(a => a.id) } as any);
     if (createdByUsers.length) filterFields.push({ field: 'createdBy', operation: 'in', value: '', values: createdByUsers.map(a => a.id) } as any);
     if (completedByUsers.length) filterFields.push({ field: 'completedBy', operation: 'in', value: '', values: completedByUsers.map(a => a.id) } as any);
-    if (assignedToUsers.length) filterFields.push({ field: 'assignedTo', operation: 'inm', value: '', values: assignedToUsers.map(a => a.id) } as any);
+    if (assigned_toUsers.length) filterFields.push({ field: 'assigned_to', operation: 'inm', value: '', values: assigned_toUsers.map(a => a.id) } as any);
     if (customers.length) filterFields.push({ field: 'customer', operation: 'inm', value: '', values: customers.map(a => a.id) } as any);
     if (createdFrom) filterFields.push({ field: 'created_at', operation: 'ge', value: createdFrom } as any);
     if (createdTo) filterFields.push({ field: 'created_at', operation: 'le', value: createdTo } as any);
@@ -146,7 +146,7 @@ export default function WorkOrdersClientPage({
       crit.direction = (sortModel[0].sort === 'desc' ? 'DESC' : 'ASC');
     }
     return crit;
-  }, [page, pageSize, q, priority, sortModel, statuses, hideArchived, dueFrom, dueTo, typeValue, assets, locations, teams, primaryUsers, createdByUsers, completedByUsers, assignedToUsers, customers, createdFrom, createdTo, updatedFrom, updatedTo, completedFrom, completedTo]);
+  }, [page, pageSize, q, priority, sortModel, statuses, hideArchived, dueFrom, dueTo, typeValue, assets, locations, teams, primaryUsers, createdByUsers, completedByUsers, assigned_toUsers, customers, createdFrom, createdTo, updatedFrom, updatedTo, completedFrom, completedTo]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -228,7 +228,7 @@ export default function WorkOrdersClientPage({
           onTeamsChange={(vals) => { setPage(0); setTeams(vals); }}
           primaryUsers={primaryUsers}
           onPrimaryUsersChange={(vals) => { setPage(0); setPrimaryUsers(vals); }}
-          assignedTo={assignedToUsers}
+          assigned_to={assigned_toUsers}
           onAssignedToChange={(vals) => { setPage(0); setAssignedToUsers(vals); }}
           customers={customers}
           onCustomersChange={(vals) => { setPage(0); setCustomers(vals); }}

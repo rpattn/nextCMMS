@@ -17,7 +17,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
   const [area, setArea] = useState('');
   const [team, setTeam] = useState<RemoteOption | null>(null);
   const [primaryUser, setPrimaryUser] = useState<RemoteOption | null>(null);
-  const [assignedTo, setAssignedTo] = useState<RemoteOption[]>([]);
+  const [assigned_to, setAssignedTo] = useState<RemoteOption[]>([]);
   const [customers, setCustomers] = useState<RemoteOption[]>([]);
   const [vendors, setVendors] = useState<RemoteOption[]>([]);
   const [parentAsset, setParentAsset] = useState<RemoteOption | null>(null);
@@ -41,7 +41,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
       if (location?.id) payload.location = { id: location.id };
       if (team?.id) payload.team = { id: team.id };
       if (primaryUser?.id) payload.primaryUser = { id: primaryUser.id };
-      if (assignedTo.length) payload.assignedTo = assignedTo.map((u) => ({ id: u.id }));
+      if (assigned_to.length) payload.assigned_to = assigned_to.map((u) => ({ id: u.id }));
       if (customers.length) payload.customers = customers.map((c) => ({ id: c.id }));
       if (vendors.length) payload.vendors = vendors.map((v) => ({ id: v.id }));
       if (parentAsset?.id) payload.parentAsset = { id: parentAsset.id };
@@ -136,7 +136,7 @@ export default function CreateAssetModal({ open, onClose, onCreated }: { open: b
           <MultiRemoteSearchSelect
             label={t('additional_workers') || 'Additional Workers'}
             placeholder={t('search_users') || 'Search users...'}
-            value={assignedTo}
+            value={assigned_to}
             onChange={setAssignedTo}
             search={async (q) => {
               const criteria = {

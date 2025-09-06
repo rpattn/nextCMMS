@@ -60,7 +60,7 @@ export default function AssetsClientPage({
   const [model, setModel] = useState<string | null>(null);
   const [teams, setTeams] = useState<any[]>([]);
   const [primaryUsers, setPrimaryUsers] = useState<any[]>([]);
-  const [assignedTo, setAssignedTo] = useState<any[]>([]);
+  const [assigned_to, setAssignedTo] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [vendors, setVendors] = useState<any[]>([]);
   const [createdFrom, setCreatedFrom] = useState<string | null>(null);
@@ -100,7 +100,7 @@ export default function AssetsClientPage({
     if (model) filterFields.push({ field: 'model', operation: 'cn', value: model } as any);
     if (teams.length) filterFields.push({ field: 'team', operation: 'in', value: '', values: teams.map((o: any) => o.id) } as any);
     if (primaryUsers.length) filterFields.push({ field: 'primaryUser', operation: 'in', value: '', values: primaryUsers.map((o: any) => o.id) } as any);
-    if (assignedTo.length) filterFields.push({ field: 'assignedTo', operation: 'inm', value: '', values: assignedTo.map((o: any) => o.id) } as any);
+    if (assigned_to.length) filterFields.push({ field: 'assigned_to', operation: 'inm', value: '', values: assigned_to.map((o: any) => o.id) } as any);
     if (customers.length) filterFields.push({ field: 'customer', operation: 'inm', value: '', values: customers.map((o: any) => o.id) } as any);
     if (vendors.length) filterFields.push({ field: 'vendor', operation: 'inm', value: '', values: vendors.map((o: any) => o.id) } as any);
     if (createdFrom) filterFields.push({ field: 'created_at', operation: 'ge', value: createdFrom } as any);
@@ -110,7 +110,7 @@ export default function AssetsClientPage({
     const crit: SearchCriteria = { pageNum: page, pageSize, filterFields };
     if (sortModel.length) crit.sortField = sortModel[0].field, crit.direction = (sortModel[0].sort === 'desc' ? 'DESC' : 'ASC');
     return crit;
-  }, [page, pageSize, q, sortModel, hideArchived, statuses, locations, area, model, teams, primaryUsers, assignedTo, customers, vendors, createdFrom, createdTo, updatedFrom, updatedTo]);
+  }, [page, pageSize, q, sortModel, hideArchived, statuses, locations, area, model, teams, primaryUsers, assigned_to, customers, vendors, createdFrom, createdTo, updatedFrom, updatedTo]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -170,7 +170,7 @@ export default function AssetsClientPage({
           onTeamsChange={(vals) => { setPage(0); setTeams(vals); }}
           primaryUsers={primaryUsers}
           onPrimaryUsersChange={(vals) => { setPage(0); setPrimaryUsers(vals); }}
-          assignedTo={assignedTo}
+          assigned_to={assigned_to}
           onAssignedToChange={(vals) => { setPage(0); setAssignedTo(vals); }}
           customers={customers}
           onCustomersChange={(vals) => { setPage(0); setCustomers(vals); }}
@@ -306,8 +306,8 @@ function AssetDetailsPanel({ id, onClose, onChanged, onEdit, refreshKey }: { id:
         {Array.isArray(data?.teams) && data.teams.length > 0 && (
           <div><b>Teams:</b> {data.teams.map((t: any) => t.name || `#${t.id}`).join(', ')}</div>
         )}
-        {Array.isArray(data?.assignedTo) && data.assignedTo.length > 0 && (
-          <div><b>Additional Workers:</b> {data.assignedTo.map((u: any) => u.name || [u.firstName, u.lastName].filter(Boolean).join(' ') || `#${u.id}`).join(', ')}</div>
+        {Array.isArray(data?.assigned_to) && data.assigned_to.length > 0 && (
+          <div><b>Additional Workers:</b> {data.assigned_to.map((u: any) => u.name || [u.firstName, u.lastName].filter(Boolean).join(' ') || `#${u.id}`).join(', ')}</div>
         )}
         {Array.isArray(data?.customers) && data.customers.length > 0 && (
           <div><b>Customers:</b> {data.customers.map((c: any) => c.name || `#${c.id}`).join(', ')}</div>

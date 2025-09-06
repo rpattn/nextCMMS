@@ -17,7 +17,7 @@ type Asset = {
   area?: string | null;
   team?: { id: number; name?: string } | null;
   primaryUser?: { id: number; name?: string; firstName?: string; lastName?: string } | null;
-  assignedTo?: Array<{ id: number; name?: string; firstName?: string; lastName?: string }>;
+  assigned_to?: Array<{ id: number; name?: string; firstName?: string; lastName?: string }>;
   customers?: Array<{ id: number; name?: string }>;
   vendors?: Array<{ id: number; name?: string }>;
   parentAsset?: { id: number; name?: string } | null;
@@ -39,7 +39,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
   const [location, setLocation] = useState<RemoteOption | null>(null);
   const [team, setTeam] = useState<RemoteOption | null>(null);
   const [primaryUser, setPrimaryUser] = useState<RemoteOption | null>(null);
-  const [assignedTo, setAssignedTo] = useState<RemoteOption[]>([]);
+  const [assigned_to, setAssignedTo] = useState<RemoteOption[]>([]);
   const [customers, setCustomers] = useState<RemoteOption[]>([]);
   const [vendors, setVendors] = useState<RemoteOption[]>([]);
   const [parentAsset, setParentAsset] = useState<RemoteOption | null>(null);
@@ -70,7 +70,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
           area: (data as any).area || null,
           team: (data as any).team || null,
           primaryUser: (data as any).primaryUser || null,
-          assignedTo: (data as any).assignedTo || [],
+          assigned_to: (data as any).assigned_to || [],
           customers: (data as any).customers || [],
           vendors: (data as any).vendors || [],
           parentAsset: (data as any).parentAsset || null,
@@ -88,7 +88,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
         setLocation(next.location ? { id: next.location.id, label: next.location.name || `#${next.location.id}` } : null);
         setTeam(next.team ? { id: next.team.id, label: next.team.name || `#${next.team.id}` } : null);
         setPrimaryUser(next.primaryUser ? { id: next.primaryUser.id, label: next.primaryUser.name || `${next.primaryUser.firstName || ''} ${next.primaryUser.lastName || ''}`.trim() || `#${next.primaryUser.id}` } : null);
-        setAssignedTo((next.assignedTo || []).map((u) => ({ id: u.id, label: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || `#${u.id}` })));
+        setAssignedTo((next.assigned_to || []).map((u) => ({ id: u.id, label: u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || `#${u.id}` })));
         setCustomers((next.customers || []).map((c) => ({ id: c.id, label: c.name || `#${c.id}` })));
         setVendors((next.vendors || []).map((v) => ({ id: v.id, label: v.name || `#${v.id}` })));
         setParentAsset(next.parentAsset ? { id: next.parentAsset.id, label: next.parentAsset.name || `#${next.parentAsset.id}` } : null);
@@ -118,7 +118,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
       if (location?.id) payload.location = { id: location.id }; else payload.location = null;
       if (team?.id) payload.team = { id: team.id }; else payload.team = null;
       if (primaryUser?.id) payload.primaryUser = { id: primaryUser.id }; else payload.primaryUser = null;
-      payload.assignedTo = assignedTo.map((u) => ({ id: u.id }));
+      payload.assigned_to = assigned_to.map((u) => ({ id: u.id }));
       payload.customers = customers.map((c) => ({ id: c.id }));
       payload.vendors = vendors.map((v) => ({ id: v.id }));
       if (parentAsset?.id) payload.parentAsset = { id: parentAsset.id }; else payload.parentAsset = null;
@@ -213,7 +213,7 @@ export default function EditAssetModal({ id, open, onClose, onSaved }: { id: num
             <MultiRemoteSearchSelect
               label={t('additional_workers') || 'Additional Workers'}
               placeholder={t('search_users') || 'Search users...'}
-              value={assignedTo}
+              value={assigned_to}
               onChange={setAssignedTo}
               search={async (q) => {
                 const criteria = {

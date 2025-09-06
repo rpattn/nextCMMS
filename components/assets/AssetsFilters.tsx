@@ -21,7 +21,7 @@ export default function AssetsFilters({
   onTeamsChange,
   primaryUsers,
   onPrimaryUsersChange,
-  assignedTo,
+  assigned_to,
   onAssignedToChange,
   customers,
   onCustomersChange,
@@ -50,7 +50,7 @@ export default function AssetsFilters({
   onTeamsChange: (vals: RemoteOption[]) => void;
   primaryUsers: RemoteOption[];
   onPrimaryUsersChange: (vals: RemoteOption[]) => void;
-  assignedTo: RemoteOption[];
+  assigned_to: RemoteOption[];
   onAssignedToChange: (vals: RemoteOption[]) => void;
   customers: RemoteOption[];
   onCustomersChange: (vals: RemoteOption[]) => void;
@@ -134,7 +134,7 @@ export default function AssetsFilters({
       <MultiRemoteSearchSelect
         label={t('additional_workers') || 'Additional Workers'}
         placeholder={t('search_users') || 'Search users...'}
-        value={assignedTo}
+        value={assigned_to}
         onChange={onAssignedToChange}
         search={async (q) => {
           const criteria = { pageNum: 0, pageSize: 10, filterFields: q ? [{ field: 'email', operation: 'cn', value: q, alternatives: [ { field: 'firstName', operation: 'cn', value: q }, { field: 'lastName', operation: 'cn', value: q } ] }] : [] };

@@ -37,7 +37,7 @@ export default function WorkOrdersFilters({
   onCreatedByChange,
   completedBy = [],
   onCompletedByChange,
-  assignedTo = [],
+  assigned_to = [],
   onAssignedToChange,
   customers = [],
   onCustomersChange,
@@ -80,7 +80,7 @@ export default function WorkOrdersFilters({
   onCreatedByChange?: (vals: RemoteOption[]) => void;
   completedBy?: RemoteOption[];
   onCompletedByChange?: (vals: RemoteOption[]) => void;
-  assignedTo?: RemoteOption[];
+  assigned_to?: RemoteOption[];
   onAssignedToChange?: (vals: RemoteOption[]) => void;
   customers?: RemoteOption[];
   onCustomersChange?: (vals: RemoteOption[]) => void;
@@ -195,7 +195,7 @@ export default function WorkOrdersFilters({
       <MultiRemoteSearchSelect
         label={t('additional_workers') || 'Assigned To'}
         placeholder={t('search_users') || 'Search users...'}
-        value={assignedTo}
+        value={assigned_to}
         onChange={onAssignedToChange || (() => {})}
         search={async (q) => {
           const criteria = {

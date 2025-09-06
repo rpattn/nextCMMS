@@ -34,7 +34,7 @@ type WorkOrder = {
   location?: { name?: string } | null;
   team?: { name?: string } | null;
   asset?: { name?: string } | null;
-  assignedTo?: Array<{ id: number; firstName?: string; lastName?: string; name?: string }>;
+  assigned_to?: Array<{ id: number; firstName?: string; lastName?: string; name?: string }>;
   customers?: Array<{ id: number; name?: string }>;
 };
 
@@ -131,11 +131,11 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('location') || 'Location'}</Typography><Typography variant="body2">{wo.location?.name || ''}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('team') || 'Team'}</Typography><Typography variant="body2">{wo.team?.name || ''}</Typography></Grid>
                 <Grid size={{xs:12, sm:6}}><Typography variant="caption" color="text.secondary">{t('asset') || 'Asset'}</Typography><Typography variant="body2">{wo.asset?.name || ''}</Typography></Grid>
-                {!!(wo.assignedTo && wo.assignedTo.length) && (
+                {!!(wo.assigned_to && wo.assigned_to.length) && (
                   <Grid size={{xs:12}}>
                     <Typography variant="caption" color="text.secondary">{t('assigned_to') || 'Assigned To'}</Typography>
                     <Stack direction="row" spacing={1} sx={{ mt: 0.5, flexWrap: 'wrap' }}>
-                      {wo.assignedTo!.map((u) => (
+                      {wo.assigned_to!.map((u) => (
                         <Chip key={u.id} size="small" label={u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || `#${u.id}`} />
                       ))}
                     </Stack>
