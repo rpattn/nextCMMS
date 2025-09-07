@@ -7,11 +7,9 @@ import InviteAcceptForm from '@/components/auth/InviteAcceptForm';
 export default async function InviteAcceptPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token?: string }> | { token?: string };
+  searchParams?: Promise<{ token?: string }>;
 }) {
-  const sp = (typeof (searchParams as any)?.then === 'function')
-    ? await (searchParams as Promise<{ token?: string }>)
-    : (searchParams as { token?: string });
+  const sp = searchParams ? await searchParams : undefined;
   const token = String(sp?.token || '');
 
   async function acceptAction(_: any, formData: FormData) {
