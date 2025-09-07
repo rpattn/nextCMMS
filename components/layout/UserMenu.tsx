@@ -61,10 +61,22 @@ export default function UserMenu() {
     return u?.avatar_url || undefined;
   }, [user]);
 
+  const proxiedImageUrl = useMemo(() => {
+    if (!imageUrl) return undefined;
+    try {
+      const u = new URL(imageUrl);
+      const host = u.hostname.toLowerCase();
+      if (host === 'lh3.googleusercontent.com' || host.endsWith('.googleusercontent.com')) {
+        return `/api/image-proxy?url=${encodeURIComponent(imageUrl)}`;
+      }
+    } catch {}
+    return imageUrl;
+  }, [imageUrl]);
+
   return (
     <>
       <IconButton ref={anchorRef} onClick={() => setOpen(true)} size="small" aria-label="user menu">
-        <Avatar sx={{ width: 32, height: 32 }} src={imageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer' }}>
+        <Avatar sx={{ width: 32, height: 32 }} src={proxiedImageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer', crossOrigin: 'anonymous' }}>
           {initials(user?.name || user?.email)}
         </Avatar>
       </IconButton>
@@ -78,7 +90,7 @@ export default function UserMenu() {
       >
         <Box sx={{ px: 2, pt: 2, pb: 1.5, maxWidth: 280 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <Avatar sx={{ width: 40, height: 40 }} src={imageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer' }}>
+            <Avatar sx={{ width: 40, height: 40 }} src={proxiedImageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer', crossOrigin: 'anonymous' }}>
               {initials(user?.name || user?.email)}
             </Avatar>
             <Box sx={{ minWidth: 0 }}>

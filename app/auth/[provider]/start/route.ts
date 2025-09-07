@@ -15,15 +15,22 @@ export async function GET(req: NextRequest, props: { params: Promise<{ provider:
 
   const host = req.headers.get('host') || req.nextUrl.host;
   const proto = req.nextUrl.protocol.replace(':', '') || 'https';
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'X-Forwarded-Host': host,
-      'X-Forwarded-Proto': proto,
-    },
-    redirect: 'manual',
-  } as RequestInit);
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'X-Forwarded-Host': host,
+        'X-Forwarded-Proto': proto,
+      },
+      redirect: 'manual',
+    } as RequestInit);
+  } catch (e: any) {
+    const message = 'Authentication service is unavailable. Please try again later.';
+    const params = new URLSearchParams({ error: message, provider });
+    return NextResponse.redirect(`/oauth2/failure?${params.toString()}`, 302);
+  }
 
   if (res.status >= 300 && res.status < 400) {
     let location = res.headers.get('location') || '/auth/' + encodeURIComponent(provider) + '/callback';

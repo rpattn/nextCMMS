@@ -48,15 +48,22 @@ export async function GET(req: NextRequest, props: { params: Promise<{ provider:
   // Call backend without following redirects to capture Set-Cookie + Location
   const host = req.headers.get('host') || req.nextUrl.host;
   const proto = req.nextUrl.protocol.replace(':', '') || 'https';
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json, text/html;q=0.9,*/*;q=0.8',
-      'X-Forwarded-Host': host,
-      'X-Forwarded-Proto': proto,
-    },
-    redirect: 'manual',
-  } as RequestInit);
+  let res: Response;
+  try {
+    res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json, text/html;q=0.9,*/*;q=0.8',
+        'X-Forwarded-Host': host,
+        'X-Forwarded-Proto': proto,
+      },
+      redirect: 'manual',
+    } as RequestInit);
+  } catch (e: any) {
+    const message = 'Authentication service is unavailable. Please try again later.';
+    const params = new URLSearchParams({ error: message, provider });
+    return NextResponse.redirect(`/oauth2/failure?${params.toString()}`, 302);
+  }
 
   // If backend returned a redirect, mirror it and forward cookies
   if (res.status >= 300 && res.status < 400) {
