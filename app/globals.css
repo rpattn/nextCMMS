@@ -12,3 +12,40 @@ a { color: #60a5fa; text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 button { cursor: pointer; }
+
+/* Compact density tweaks */
+[data-density="compact"] header {
+  padding: 8px !important;
+}
+[data-density="compact"] .entity-toolbar {
+  margin-bottom: 4px !important;
+}
+[data-density="compact"] .entity-toolbar .MuiBox-root {
+  gap: 8px !important;
+}
+[data-density="compact"] .entity-toolbar .MuiTabs-root {
+  min-height: 32px;
+}
+[data-density="compact"] .entity-toolbar .MuiTab-root {
+  min-height: 32px;
+  padding: 4px 8px;
+}
+[data-density="compact"] .entity-toolbar .MuiButton-root {
+  min-height: 32px;
+  padding: 4px 10px;
+}
+[data-density="compact"] .entity-toolbar .MuiIconButton-root {
+  padding: 4px;
+}
+/* Select + menu density harmonization */
+[data-density="compact"] .MuiFormControl-root {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+[data-density="compact"] .MuiSelect-select {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+[data-density="compact"] .MuiMenuItem-root {
+  min-height: 32px;
+}

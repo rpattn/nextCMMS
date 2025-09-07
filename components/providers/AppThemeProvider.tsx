@@ -17,6 +17,15 @@ type AppThemeProviderProps = PropsWithChildren & {
 export default function AppThemeProvider({ children, initialThemeName, initialDir }: AppThemeProviderProps) {
   const [themeName, setThemeName] = useState<string>(initialThemeName || 'PureLightTheme');
   const [dir, setDir] = useState<'ltr' | 'rtl'>(initialDir || 'ltr');
+  const [density, setDensity] = useState<'comfortable' | 'compact'>(() => {
+    if (typeof window === 'undefined') return 'comfortable';
+    try {
+      const v = localStorage.getItem('appDensity');
+      return v === 'compact' ? 'compact' : 'comfortable';
+    } catch {
+      return 'comfortable';
+    }
+  });
 
   // Sync from localStorage only if no server-provided value
   useEffect(() => {
@@ -46,15 +55,57 @@ export default function AppThemeProvider({ children, initialThemeName, initialDi
     }
   }, [dir]);
 
+  // Sync density from localStorage and reflect to body data attribute
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem('appDensity');
+      if (v === 'compact' || v === 'comfortable') setDensity(v);
+    } catch {}
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'appDensity') {
+        const v = e.newValue === 'compact' ? 'compact' : 'comfortable';
+        setDensity(v);
+      }
+    };
+    window.addEventListener('storage', onStorage);
+    // Reflect as data attribute for optional CSS tweaks
+    if (typeof document !== 'undefined') {
+      document.body.setAttribute('data-density', density);
+    }
+    return () => window.removeEventListener('storage', onStorage);
+  }, [density]);
+
   // Color scheme is managed by MUI CssVarsProvider + InitColorSchemeScript.
 
   const customTheme = useMemo(() => themeCreator(themeName as any, dir), [themeName, dir]);
-  const theme = createTheme({
+  const themeOptions: any = {
     ...customTheme,
     cssVariables: {
       colorSchemeSelector: 'data',
-    }
-  });
+    },
+  };
+  if (density === 'compact') {
+    themeOptions.components = {
+      MuiButton: { defaultProps: { size: 'small' } },
+      MuiIconButton: { defaultProps: { size: 'small' } },
+      MuiTextField: { defaultProps: { size: 'small' } },
+      MuiFormControl: { defaultProps: { size: 'small' } },
+      MuiSelect: { defaultProps: { size: 'small' } },
+      MuiTable: { defaultProps: { size: 'small' } },
+      MuiListItem: { defaultProps: { dense: true } },
+      MuiMenuItem: { defaultProps: { dense: true } },
+      MuiChip: { defaultProps: { size: 'small' } },
+      MuiPagination: { defaultProps: { size: 'small' } },
+      MuiCheckbox: { defaultProps: { size: 'small' } },
+      MuiSwitch: { defaultProps: { size: 'small' } },
+      MuiRadio: { defaultProps: { size: 'small' } },
+      MuiInputBase: { defaultProps: { margin: 'dense' } },
+    };
+  } else {
+    // Ensure MUI receives an object, not undefined, to avoid SSR Object.keys crash
+    themeOptions.components = {};
+  }
+  const theme = createTheme(themeOptions);
 
   const emotionOptions = useMemo(() => ({
     key: 'mui',

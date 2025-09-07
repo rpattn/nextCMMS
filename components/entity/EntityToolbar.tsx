@@ -31,7 +31,7 @@ export default function EntityToolbar({
   const menuOpen = Boolean(menuAnchor);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+    <Box className="entity-toolbar" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         {title}
         {tabs && (

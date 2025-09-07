@@ -47,6 +47,30 @@ export default function EntityGrid<T extends EntityRow>({
   }, []);
 
   const paginationModel = useMemo(() => ({ page, pageSize }), [page, pageSize]);
+  const [gridDensity, setGridDensity] = useState<'compact' | 'standard' | 'comfortable'>(() => {
+    if (typeof window === 'undefined') return 'standard';
+    try {
+      const v = localStorage.getItem('appDensity');
+      return v === 'compact' ? 'compact' : 'comfortable';
+    } catch {
+      return 'standard';
+    }
+  });
+
+  useEffect(() => {
+    const apply = () => {
+      try {
+        const v = localStorage.getItem('appDensity');
+        setGridDensity(v === 'compact' ? 'compact' : 'comfortable');
+      } catch {}
+    };
+    apply();
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'appDensity') apply();
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const LazyDataGrid = useMemo(() => dynamic<DataGridProps>(() => import('@mui/x-data-grid').then(m => m.DataGrid as any), {
     ssr: false,
@@ -151,6 +175,7 @@ export default function EntityGrid<T extends EntityRow>({
         disableRowSelectionOnClick
         onRowClick={(params, event) => handleRowClick(event, params)}
         getRowId={getRowId || ((row: any) => row.id)}
+        density={gridDensity}
       />
     </div>
   );
