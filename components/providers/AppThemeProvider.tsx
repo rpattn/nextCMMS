@@ -12,20 +12,13 @@ import ModeCookieSync from './ModeCookieSync';
 type AppThemeProviderProps = PropsWithChildren & {
   initialThemeName?: string;
   initialDir?: 'ltr' | 'rtl';
+  initialDensity?: 'comfortable' | 'compact';
 };
 
-export default function AppThemeProvider({ children, initialThemeName, initialDir }: AppThemeProviderProps) {
+export default function AppThemeProvider({ children, initialThemeName, initialDir, initialDensity }: AppThemeProviderProps) {
   const [themeName, setThemeName] = useState<string>(initialThemeName || 'PureLightTheme');
   const [dir, setDir] = useState<'ltr' | 'rtl'>(initialDir || 'ltr');
-  const [density, setDensity] = useState<'comfortable' | 'compact'>(() => {
-    if (typeof window === 'undefined') return 'comfortable';
-    try {
-      const v = localStorage.getItem('appDensity');
-      return v === 'compact' ? 'compact' : 'comfortable';
-    } catch {
-      return 'comfortable';
-    }
-  });
+  const [density, setDensity] = useState<'comfortable' | 'compact'>(initialDensity || 'comfortable');
 
   // Sync from localStorage only if no server-provided value
   useEffect(() => {
@@ -55,12 +48,15 @@ export default function AppThemeProvider({ children, initialThemeName, initialDi
     }
   }, [dir]);
 
-  // Sync density from localStorage and reflect to body data attribute
+  // Sync density changes and reflect to body data attribute; if server provided an initialDensity,
+  // do not override it on mount to avoid hydration mismatches.
   useEffect(() => {
-    try {
-      const v = localStorage.getItem('appDensity');
-      if (v === 'compact' || v === 'comfortable') setDensity(v);
-    } catch {}
+    if (!initialDensity) {
+      try {
+        const v = localStorage.getItem('appDensity');
+        if (v === 'compact' || v === 'comfortable') setDensity(v);
+      } catch {}
+    }
     const onStorage = (e: StorageEvent) => {
       if (e.key === 'appDensity') {
         const v = e.newValue === 'compact' ? 'compact' : 'comfortable';
@@ -73,7 +69,7 @@ export default function AppThemeProvider({ children, initialThemeName, initialDi
       document.body.setAttribute('data-density', density);
     }
     return () => window.removeEventListener('storage', onStorage);
-  }, [density]);
+  }, [density, initialDensity]);
 
   // Color scheme is managed by MUI CssVarsProvider + InitColorSchemeScript.
 
