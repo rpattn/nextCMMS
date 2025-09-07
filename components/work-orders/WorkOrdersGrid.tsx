@@ -150,13 +150,14 @@ export default function WorkOrdersGrid({
           const id = params.row.id as string;
           return (
             <RowActionsMenu
+              ariaLabel='actions'
               actions={[
                 {
                   key: 'view',
                   label: 'View',
                   icon: <OpenInNewTwoToneIcon fontSize="small" />,
                   onClick: () => {
-                    router.push(`/app/work-orders/${id}`)
+                    router.push(`/app/work-orders?wo=${id}`)
                   }
                 },
                 {

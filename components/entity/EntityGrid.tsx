@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataGrid, GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { DataGrid, GridColDef, GridPaginationModel, GridSortModel, MuiEvent } from '@mui/x-data-grid';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export type EntityRow = { id: string | number } & Record<string, any>;
@@ -74,8 +74,11 @@ export default function EntityGrid<T extends EntityRow>({
     router.push(`${pathname}?${params.toString()}`);
   }, [onChangeSort, pathname, router, searchParams]);
 
-  const handleRowClick = useCallback((params: any) => {
+  const handleRowClick = useCallback((e: any, params: any) => {
     const id = params?.id as T["id"];
+    console.log(e, params)
+    let preventClick = (e.target?.ariaLabel === "actions") || (e.target?.parentElement?.ariaLabel === "actions")
+    if (preventClick) return;
     onRowClick?.(id, params);
   }, [onRowClick]);
 
@@ -123,7 +126,7 @@ export default function EntityGrid<T extends EntityRow>({
         pageSizeOptions={[5, 10, 20, 50, 100]}
         disableColumnMenu
         disableRowSelectionOnClick
-        onRowClick={handleRowClick}
+        onRowClick={(params, event) => handleRowClick(event, params)}
         getRowId={getRowId || ((row: any) => row.id)}
       />
     </div>
