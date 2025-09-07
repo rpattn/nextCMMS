@@ -1,9 +1,8 @@
-"use client";
-
-import { Card, Container, Typography, Box, Link } from '@mui/material';
+import { Card, Container, Typography, Box, Link, Divider } from '@mui/material';
 import LoginForm from '@/components/auth/LoginForm';
 import Logo from '@/components/common/Logo';
 import NextLink from 'next/link';
+import OAuthButtons from '@/components/auth/OAuthButtons';
 
 export default function AccountLoginPage() {
   return (
@@ -14,6 +13,8 @@ export default function AccountLoginPage() {
           <Typography variant="h2" sx={{ mb: 1 }}>Login</Typography>
           <Typography variant="h4" color="text.secondary" fontWeight="normal">Welcome back</Typography>
         </Box>
+        <OAuthButtons />
+        <Divider sx={{ my: 2 }}><Typography variant="caption" color="text.secondary">or continue with email</Typography></Divider>
         <LoginForm />
         <Box my={4} textAlign="center">
           <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">No account yet?</Typography>{' '}

@@ -4,7 +4,7 @@ import { AuthProvider } from '@/components/auth/AuthProvider';
 import UserMenu from '@/components/layout/UserMenu';
 import LanguagePicker from '@/components/common/LanguagePicker';
 import Sidebar from '@/components/layout/Sidebar';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import HeaderBar from '@/components/layout/HeaderBar';
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   // Server-side guard
