@@ -6,6 +6,7 @@ export type UserResponseDTO = {
   name?: string;
   role?: { code?: string };
   // optional profile image fields coming from backend
+  avatar_url?: string;
   avatar?: string;
   profileImageUrl?: string;
   picture?: string;

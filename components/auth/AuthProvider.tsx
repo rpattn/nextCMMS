@@ -8,6 +8,7 @@ export type AuthUser = {
   name?: string;
   role?: { code?: string };
   // optional fields from backend for profile image & account switching
+  avatar_url?: string;
   avatar?: string;
   profileImageUrl?: string;
   picture?: string;

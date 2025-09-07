@@ -128,7 +128,7 @@ export default function EditWorkOrderModal({ id, open, onClose, onSaved }: { id:
               label={t('primary_worker') || 'Primary User'}
               placeholder={t('search_users') || 'Search users...'}
               value={primaryUser}
-              onChange={(v)=>{console.log(v); setPrimaryUser(v)}}
+              onChange={setPrimaryUser}
               search={async (q) => {
                 const criteria = {
                   pageNum: 0,

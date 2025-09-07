@@ -5,6 +5,7 @@ import { Box, Button, CircularProgress, IconButton, InputAdornment, Link, TextFi
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import NextLink from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { api } from '@/lib/api';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -66,6 +67,15 @@ export default function LoginForm() {
       setFormError(raw || 'Wrong credentials');
       return;
     }
+    try {
+      // Fetch profile to get avatar_url and cache for this session
+      const me: any = await api('auth/me');
+      try {
+        sessionStorage.setItem('cmms_me', JSON.stringify(me));
+        const img = me?.avatar_url || me?.profileImageUrl || me?.avatar || me?.picture || me?.image?.publicUrl || me?.image?.url || me?.image?.path;
+        if (img) sessionStorage.setItem('cmms_avatar_url', String(img));
+      } catch {}
+    } catch {}
     router.replace(next);
   };
 

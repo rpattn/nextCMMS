@@ -32,6 +32,14 @@ export async function apiServer<T = unknown>(
     headers: h,
     cache: 'no-store',
   });
+  /*
+  //DEBUG_LOG Log body without consuming the original response
+  const ctdbg = res.headers.get('content-type') ?? '';
+  if (ctdbg.includes('application/json')) {
+    console.log('JSON:', await res.clone().json());
+  } else {
+    console.log('TEXT:', (await res.clone().text()));
+  }*/
 
   if (!res.ok) {
     const errBody = await res.text().catch(() => '');

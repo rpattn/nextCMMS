@@ -58,21 +58,13 @@ export default function UserMenu() {
 
   const imageUrl = useMemo(() => {
     const u: any = user || {};
-    return (
-      u?.profileImageUrl ||
-      u?.avatar ||
-      u?.picture ||
-      u?.image?.publicUrl ||
-      u?.image?.url ||
-      u?.image?.path ||
-      undefined
-    );
+    return u?.avatar_url || undefined;
   }, [user]);
 
   return (
     <>
       <IconButton ref={anchorRef} onClick={() => setOpen(true)} size="small" aria-label="user menu">
-        <Avatar sx={{ width: 32, height: 32 }} src={imageUrl} alt={user?.name || user?.email || "User"}>
+        <Avatar sx={{ width: 32, height: 32 }} src={imageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer' }}>
           {initials(user?.name || user?.email)}
         </Avatar>
       </IconButton>
@@ -86,7 +78,7 @@ export default function UserMenu() {
       >
         <Box sx={{ px: 2, pt: 2, pb: 1.5, maxWidth: 280 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <Avatar sx={{ width: 40, height: 40 }} src={imageUrl} alt={user?.name || user?.email || "User"}>
+            <Avatar sx={{ width: 40, height: 40 }} src={imageUrl} alt={user?.name || user?.email || "User"} imgProps={{ referrerPolicy: 'no-referrer' }}>
               {initials(user?.name || user?.email)}
             </Avatar>
             <Box sx={{ minWidth: 0 }}>

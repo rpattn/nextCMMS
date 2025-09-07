@@ -99,7 +99,7 @@ export default function EntityGrid<T extends EntityRow>({
 
   const handleRowClick = useCallback((e: any, params: any) => {
     const id = params?.id as T["id"];
-    console.log(e, params)
+    //console.log(e, params)
     let preventClick = (e.target?.ariaLabel === "actions") || (e.target?.parentElement?.ariaLabel === "actions")
     if (preventClick) return;
     onRowClick?.(id, params);

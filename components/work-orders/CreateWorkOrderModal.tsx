@@ -98,7 +98,7 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
               };
               const res: any = await api('users/search', { method: 'POST', body: JSON.stringify(criteria) });
               const content = res?.content || [];
-              console.log(content)
+              //console.log(content)
               return content.map((u: any) => ({ id: u.ID, label: u.Email || u.Name || `${u.Name || ''} ${u.Name || ''}`.trim() }));
             }}
           />
@@ -153,7 +153,7 @@ export default function CreateWorkOrderModal({ open, onClose, onCreated, initial
                 ]}] : []
               };
               const res: any = await api('users/search', { method: 'POST', body: JSON.stringify(criteria) });
-              console.log(res)
+              //console.log(res)
               const content = res?.content || [];
               return content.map((u: any) => ({ id: u.ID, label: u.Email || `${u.Name || ''} ${u.Email  }` }));
             }}

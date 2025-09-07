@@ -288,14 +288,24 @@ export default function WorkOrdersClientPage({
         onCreated={() => {
           // refresh list
           setCreateOpen(false);
-          // call load via toggling deps by changing page to 0
+          // ensure reload: reset to first page and bump refresh key
           setPage(0);
+          setRefreshKey((k) => k + 1);
         }}
         initialdue_date={createInitialdue_date}
       />
 
       {editId != null && (
-        <EditWorkOrderModal id={editId} open={editOpen} onClose={() => setEditOpen(false)} onSaved={() => { setEditOpen(false); setPage(0); }} />
+        <EditWorkOrderModal
+          id={editId}
+          open={editOpen}
+          onClose={() => setEditOpen(false)}
+          onSaved={() => {
+            setEditOpen(false);
+            setPage(0);
+            setRefreshKey((k) => k + 1);
+          }}
+        />
       )}
 
       <EntityDetailsDrawer open={details.open} onClose={details.close}>
