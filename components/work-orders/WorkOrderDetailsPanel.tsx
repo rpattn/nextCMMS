@@ -34,7 +34,7 @@ type WorkOrder = {
   location?: { name?: string } | null;
   team?: { name?: string } | null;
   asset?: { name?: string } | null;
-  assigned_to?: Array<{ id: number; firstName?: string; lastName?: string; name?: string }>;
+  assigned_to?: Array<{ user_id: number; email?: string; name?: string }>;
   customers?: Array<{ id: number; name?: string }>;
 };
 
@@ -136,7 +136,7 @@ export default function WorkOrderDetailsPanel({ id, onClose, onChanged }: { id: 
                     <Typography variant="caption" color="text.secondary">{t('assigned_to') || 'Assigned To'}</Typography>
                     <Stack direction="row" spacing={1} sx={{ mt: 0.5, flexWrap: 'wrap' }}>
                       {wo.assigned_to!.map((u) => (
-                        <Chip key={u.id} size="small" label={u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || `#${u.id}`} />
+                        <Chip key={u.user_id} size="small" label={u.name || `${u.email || ''} ${u.name || ''}`.trim() || `#${u.user_id}`} />
                       ))}
                     </Stack>
                   </Grid>

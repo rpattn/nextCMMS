@@ -1,7 +1,8 @@
 "use client";
 
 import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataGrid, GridColDef, GridPaginationModel, GridSortModel, MuiEvent } from '@mui/x-data-grid';
+import dynamic from 'next/dynamic';
+import type { GridColDef, GridPaginationModel, GridSortModel, MuiEvent, DataGridProps } from '@mui/x-data-grid';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export type EntityRow = { id: string | number } & Record<string, any>;
@@ -46,6 +47,28 @@ export default function EntityGrid<T extends EntityRow>({
   }, []);
 
   const paginationModel = useMemo(() => ({ page, pageSize }), [page, pageSize]);
+
+  const LazyDataGrid = useMemo(() => dynamic<DataGridProps>(() => import('@mui/x-data-grid').then(m => m.DataGrid as any), {
+    ssr: false,
+    loading: () => (
+      <div style={{ height: 600, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div aria-busy="true" aria-live="polite" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span
+            style={{
+              width: 18,
+              height: 18,
+              border: '2px solid var(--mui-palette-divider)',
+              borderTopColor: 'var(--mui-palette-text-secondary)',
+              borderRadius: '50%',
+              display: 'inline-block',
+              animation: 'entity-spin 0.8s linear infinite'
+            }}
+          />
+          <span style={{ color: 'var(--mui-palette-text-secondary)' }}>Loading.</span>
+        </div>
+      </div>
+    )
+  }), []);
 
   const handlePaginationChange = useCallback((model: GridPaginationModel) => {
     if (!mountedRef.current) return;
@@ -106,7 +129,7 @@ export default function EntityGrid<T extends EntityRow>({
 
   return (
     <div style={{ height: 600, width: '100%' }}>
-      <DataGrid
+      <LazyDataGrid
         sx={{
           bgcolor: 'background.paper',
           color: 'text.primary',

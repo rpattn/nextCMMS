@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataGrid, GridColDef, GridPaginationModel } from '@mui/x-data-grid';
+import dynamic from 'next/dynamic';
+import type { GridColDef, GridPaginationModel, DataGridProps } from '@mui/x-data-grid';
 import { Box, IconButton, Chip } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -189,9 +190,31 @@ export default function HierarchicalGrid({
     });
   }, [columns, primaryField, expandedIds, toggleExpand, childCountAccessor]);
 
+  const LazyDataGrid = useMemo(() => dynamic<DataGridProps>(() => import('@mui/x-data-grid').then(m => m.DataGrid as any), {
+    ssr: false,
+    loading: () => (
+      <div style={{ height: 600, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div aria-busy="true" aria-live="polite" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span
+            style={{
+              width: 18,
+              height: 18,
+              border: '2px solid var(--mui-palette-divider)',
+              borderTopColor: 'var(--mui-palette-text-secondary)',
+              borderRadius: '50%',
+              display: 'inline-block',
+              animation: 'entity-spin 0.8s linear infinite'
+            }}
+          />
+          <span style={{ color: 'var(--mui-palette-text-secondary)' }}>Loading.</span>
+        </div>
+      </div>
+    )
+  }), []);
+
   return (
     <div style={{ height: 600, width: '100%' }}>
-      <DataGrid
+      <LazyDataGrid
         sx={{
           bgcolor: 'background.paper', color: 'text.primary', borderColor: 'divider',
           '& .MuiDataGrid-columnHeaders': { bgcolor: 'background.default' }

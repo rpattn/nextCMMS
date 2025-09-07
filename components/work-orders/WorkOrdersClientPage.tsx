@@ -6,7 +6,7 @@ import { Page, SearchCriteria } from '@/lib/page';
 import WorkOrdersGrid, { WorkOrderRow } from '@/components/work-orders/WorkOrdersGrid';
 import SearchBox from '@/components/common/SearchBox';
 import WorkOrdersFilters from '@/components/work-orders/WorkOrdersFilters';
-import { GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
+import type { GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { useI18n } from '@/components/providers/I18nProvider';
@@ -14,12 +14,17 @@ import CreateWorkOrderModal from '@/components/work-orders/CreateWorkOrderModal'
 import WorkOrderDetailsPanel from '@/components/work-orders/WorkOrderDetailsPanel';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import EditWorkOrderModal from '@/components/work-orders/EditWorkOrderModal';
-import WorkOrdersCalendar from '@/components/work-orders/WorkOrdersCalendar';
+import dynamic from 'next/dynamic';
 import { RemoteOption } from '@/components/common/RemoteSearchSelect';
 import useDetailsDrawer from '@/components/entity/useDetailsDrawer';
 import EntityDetailsDrawer from '@/components/entity/EntityDetailsDrawer';
 import EntityToolbar from '@/components/entity/EntityToolbar';
 import EntityFiltersDrawer from '@/components/entity/EntityFiltersDrawer';
+
+const WorkOrdersCalendar = dynamic(() => import('@/components/work-orders/WorkOrdersCalendar'), {
+  ssr: false,
+  loading: () => null
+});
 
 export default function WorkOrdersClientPage({
   initialPage = 0,

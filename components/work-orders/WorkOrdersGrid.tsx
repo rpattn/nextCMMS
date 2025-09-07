@@ -1,6 +1,6 @@
 "use client";
 
-import { GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
+import type { GridColDef, GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { Chip, MenuItem, TextField } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
