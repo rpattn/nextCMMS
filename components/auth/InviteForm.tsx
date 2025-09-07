@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useCallback, useState, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import {
   Alert,
   Box,
@@ -42,7 +42,7 @@ export default function InviteForm({
 }: {
   action: (state: InviteState | undefined, formData: FormData) => Promise<InviteState>;
 }) {
-  const [state, formAction] = useFormState(action, undefined as any);
+  const [state, formAction] = useActionState(action, undefined as any);
   const [role, setRole] = useState('Viewer');
 
   const copy = useCallback(async () => {

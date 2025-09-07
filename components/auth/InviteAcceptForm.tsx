@@ -1,13 +1,14 @@
 "use client";
 
-import { useMemo, useState } from 'react';
+import { useActionState, useEffect, useMemo, useState } from 'react';
 import { Alert, Box, Button, CircularProgress, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
 
 type AcceptState =
   | { ok: false; error: string }
-  | { ok: true; needs_password?: boolean };
+  | { ok: true; needs_password?: boolean; redirect?: string };
 
 function AcceptButton() {
   const { pending } = useFormStatus();
@@ -34,12 +35,13 @@ export default function InviteAcceptForm({
 }: {
   token: string;
   acceptAction: (state: AcceptState | undefined, formData: FormData) => Promise<AcceptState>;
-  setPasswordAction: (state: AcceptState | undefined, formData: FormData) => Promise<AcceptState>;
+  setPasswordAction: (state: AcceptState | undefined, formData: FormData) => Promise<AcceptState> | any;
 }) {
-  const [acceptState, acceptFormAction] = useFormState(acceptAction, undefined as any);
-  const [setPwdState, setPwdFormAction] = useFormState(setPasswordAction, undefined as any);
+  const [acceptState, acceptFormAction] = useActionState(acceptAction, undefined as any);
+  const [setPwdState, setPwdFormAction] = useActionState(setPasswordAction, undefined as any);
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
   const needsPassword = useMemo(() => {
     return Boolean(acceptState?.ok && acceptState.needs_password) || Boolean(setPwdState?.ok && setPwdState.needs_password);
@@ -47,6 +49,14 @@ export default function InviteAcceptForm({
 
   const acceptError = acceptState && !acceptState.ok ? acceptState.error : null;
   const setPwdError = setPwdState && !setPwdState.ok ? setPwdState.error : null;
+
+  // If server actions return a redirect URL, navigate client-side to avoid NEXT_REDIRECT dev errors
+  useEffect(() => {
+    const url = (setPwdState as any)?.redirect || (acceptState as any)?.redirect;
+    if (typeof url === 'string' && url) {
+      router.replace(url);
+    }
+  }, [acceptState, setPwdState, router]);
 
   return (
     <main>
@@ -109,4 +119,3 @@ export default function InviteAcceptForm({
     </main>
   );
 }
-

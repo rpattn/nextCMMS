@@ -7,9 +7,12 @@ import InviteAcceptForm from '@/components/auth/InviteAcceptForm';
 export default async function InviteAcceptPage({
   searchParams,
 }: {
-  searchParams: { token?: string };
+  searchParams: Promise<{ token?: string }> | { token?: string };
 }) {
-  const token = String(searchParams?.token || '');
+  const sp = (typeof (searchParams as any)?.then === 'function')
+    ? await (searchParams as Promise<{ token?: string }>)
+    : (searchParams as { token?: string });
+  const token = String(sp?.token || '');
 
   async function acceptAction(_: any, formData: FormData) {
     'use server';
@@ -74,17 +77,19 @@ export default async function InviteAcceptPage({
     const password = String(formData.get('password') || '');
     if (!password) return { ok: false, error: 'Password is required' } as const;
     try {
-      await apiServer('auth/set-password', {
+      const res = await apiServer<{ ok?: boolean; redirect?: string }>('auth/set-password', {
         method: 'POST',
         body: JSON.stringify({ password }),
         credentials: 'include',
       });
+      if (res && typeof res.redirect === 'string' && res.redirect) {
+        return { ok: true, redirect: res.redirect } as const;
+      }
     } catch (e: any) {
       const msg = (e?.message || 'Failed to set password').toString().slice(0, 300);
       return { ok: false, error: msg } as const;
     }
-    // Redirect outside of try/catch so NEXT_REDIRECT isn't swallowed
-    redirect('/app/work-orders');
+    return { ok: true, redirect: '/app/work-orders' } as const;
   }
 
   return (
