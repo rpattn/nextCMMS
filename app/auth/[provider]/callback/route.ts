@@ -77,6 +77,35 @@ export async function GET(req: NextRequest, props: { params: Promise<{ provider:
     return redirectResponse;
   }
 
+  // If backend requires linking, redirect to link-required page and preserve cookies
+  if (res.status === 409) {
+    let isLinkRequired = false;
+    try {
+      const ct = res.headers.get('content-type') || '';
+      if (ct.includes('application/json')) {
+        const data = await res.clone().json();
+        const val = String((data?.error ?? '') as any)
+          .toLowerCase()
+          .trim()
+          .replace(/\s+/g, '_');
+        if (val === 'link_required') isLinkRequired = true;
+      }
+    } catch {}
+
+    if (isLinkRequired) {
+      const redirectResponse = NextResponse.redirect('/oauth2/link-required', 302);
+      const getSetCookie = (res.headers as any).getSetCookie?.bind(res.headers);
+      const cookies = typeof getSetCookie === 'function' ? getSetCookie() : undefined;
+      if (cookies && Array.isArray(cookies)) {
+        for (const c of cookies) redirectResponse.headers.append('set-cookie', c);
+      } else {
+        const sc = res.headers.get('set-cookie');
+        if (sc) redirectResponse.headers.append('set-cookie', sc);
+      }
+      return redirectResponse;
+    }
+  }
+
   // Non-redirect responses: forward status/body minimally
   const contentType = res.headers.get('content-type') || 'text/plain; charset=utf-8';
   const body = await res.text();
